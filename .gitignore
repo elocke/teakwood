@@ -8,4 +8,4 @@ dist
 *.egg-info
 _mailinglist
 .tox
-.json
+*.json
