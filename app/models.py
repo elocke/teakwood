@@ -11,6 +11,11 @@ class Artist(db.Document):
   shows = db.ListField(db.EmbeddedDocumentField('Show'))
   website = db.URLField()
 
+  def check_artist(self, artist):
+    for names in self.name:
+      if names == artist:
+        print "hello"
+
 
 class Show(db.EmbeddedDocument):
   meta = {'allow_inheritance': False,
@@ -30,7 +35,7 @@ class Show(db.EmbeddedDocument):
   title = db.StringField(required=True)  # title
   location = db.StringField()  # location (city, st)
   venue = db.StringField()  # venue
-  year = db.IntField()  # year
+  # year = db.IntField()  # year TODO parse from date
   date = db.DateTimeField(required=True)  # date played
   addeddate = db.DateTimeField()  # addeddate
   updatedate = db.ListField(db.DateTimeField())  # array of updatedates

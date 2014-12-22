@@ -1,0 +1,26 @@
+db:
+  image: dockerfile/mongodb
+  command: mongod --rest --httpinterface
+  expose:
+    - "27017"
+  ports:
+    - "28017:28017"
+    - "27017:27017"
+redis:
+  image: redis:latest
+  ports:
+    - "15672:15672"
+web:
+  build: .
+  command: python manage.py runserver
+  volumes:
+    - .:/code
+    - logs/:/var/log
+  ports:
+    - "5000:5000"
+    - "8080:8080"
+  links:
+    - db
+    - db:database
+    - redis
+    

@@ -4,27 +4,47 @@ import os
 import argparse
 from datetime import datetime
 from operator import itemgetter
+import requests
+import pprint
 
-
+# class ImportShow(identifier):
 class ImportShow(object):
     """Accepts single Archive.org metadata and parses it for
     the Teakwood project's db"""
 
     def __init__(self, object):
-        self.json = self._open_file(object)
+        # self.json = self._open_file(object)
+        self.identifier = object
+        raw_json = self.get_file()
+        parsed_json = self.parse_json(raw_json)
+        self.commit(parsed_json)
+        # self.run()
 
-    def _open_file(self, fileName):
+    @classmethod
+    def run(cls,url):
+        instance = cls(url)
+
+        # return "success"
+        return instance
+
+    def get_file(self):
+        url = 'http://archive.org/metadata/{identifier}'.format(identifier=self.identifier)
         try:
-            f = open(fileName, 'r')
-            json = f.read()
-            f.close()
-            print 'Success: read file'
-            return json
-        except IOError:
-            print 'Error: cannot find file'
+            resp = requests.get(url)
+            resp.raise_for_status()
+        except HTTPError as e:
+            error_msg = 'Error retrieving metadata from {0}, {1}'.format(resp.url, e)
+            log.error(error_msg)
+            raise HTTPError(error_msg)
+        metadata = resp.content
+        # for key in metadata:
+                # setattr(self, key, metadata[key])
+        return metadata
 
-    def parse_json(self):
-        jdict =  ujson.loads(self.json)
+    def parse_json(self, content):
+        jdict =  ujson.loads(content)
+        # pprint.pprint(jdict)
+        # jdict = json
         sdict = {'show': {}
             }
 
@@ -116,6 +136,7 @@ class ImportShow(object):
     def commit(self, odict):
         artist = Artist()
         show = Show()
+        # print type(odict)
         artist.name = odict.pop('artist')
 
         show_meta = odict.pop('show')
@@ -152,21 +173,26 @@ class ImportShow(object):
                 # print k, v
                 setattr(show, k, v)
 
-        artist.shows.append(show)
-        artist.save()
+        # artist.shows.append(show)
+        Artist.objects(name=artist.name).update(push__shows=show, upsert=True)
+        # artist.save()
+        # artist.reload()
 
 
-def main():
-    parser = argparse.ArgumentParser(description='Parse archive.org metadata into mongodb')
-    parser.add_argument('filename')
-    args = parser.parse_args()
-    filename = os.path.join('/home/evanl/Projects/teakwood', args.filename)
-    # print filename
-    show = ImportShow(filename)
-    odict = show.parse_json()
-    print odict
-    show.commit(odict)
 
-if __name__ == "__main__":
-    main()
 
+
+# def main():
+#     parser = argparse.ArgumentParser(description='Parse archive.org metadata into mongodb')
+#     parser.add_argument('filename')
+#     args = parser.parse_args()
+#     #filename = os.path.join('/home/evanl/Projects/teakwood', args.filename)
+#     filename = args.filename
+#     print filename
+#     ImportShow(filename)
+#     # odict = show.parse_json()
+#     # print odict
+#     # show.commit(odict)
+
+# if __name__ == "__main__":
+#     main()
