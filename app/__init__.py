@@ -1,25 +1,43 @@
 from flask import Flask
 from flask.ext.mongoengine import MongoEngine
+
+
 from flask_bootstrap import Bootstrap, WebCDN
 from flask_debugtoolbar import DebugToolbarExtension
-
+import datetime
 # import mongoengine
 from eve import Eve
-from eve_mongoengine import EveMongoengine
+# from eve_mongoengine import EveMongoengine
 
 # import views
+from flask import make_response
+
 
 
 app = Flask(__name__)
-app.config["MONGODB_SETTINGS"] = {"HOST": "database",
-	"DB": "teakwood"
+
+def format_exception(tb):
+    res = make_response(tb.render_as_text())
+    res.content_type = 'text/plain'
+    return res
+app.jinja_env.exception_formatter = format_exception
+
+
+app.config["MONGODB_SETTINGS"] = {
+    "host": "database",
+    "port": 27017,
+	"db": "teakwood"
 	}
 
-# app.config["MONGODB_DB"] =
-# app.config["MONGODB_USERNAME"] =
-# app.config["MONGODB_PASSWORD"] =
-# app.config["MONGODB_HOST"] =
-# app.config["MONGODB_PORT"] =
+# app.config.update(
+#     MONGODB_HOST = 'database',
+#     MONGODB_PORT = '27017',
+#     MONGODB_DB = 'teakwood',
+# )
+
+db = MongoEngine(app)
+# db.init_app(app)
+
 
 app.config["SECRET_KEY"] = "r@g3f@c3"
 
@@ -39,12 +57,23 @@ app.debug = True
 
 # Setup Bootstrap
 Bootstrap(app)
-# app.extensions['bootstrap']['cdns']['jquery'] = WebCDN(
-#     '//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/'
+app.extensions['bootstrap']['cdns']['jquery'] = WebCDN(
+    '//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/'
+)
+
+# from flask.ext.assets import Environment, Bundle
+# assets = Environment(app)
+# assets.init_app(app)
+# css_all = Bundle(
+    # 'less/style.less',
+    # filters='less, cssmin',
+    # output='gen/min.css',
 # )
 
-db = MongoEngine(app)
-db.init_app(app)
+# These assets get passed templates to be rendered
+# assets.register('css_all', css_all)
+# assets.debug = True
+# app.config['ASSETS_DEBUG'] = True
 
 
 from rq_dashboard import RQDashboard
@@ -54,26 +83,15 @@ RQDashboard(app)
 
 toolbar = DebugToolbarExtension(app)
 
-# default eve settings
-my_settings = {
-    'MONGO_HOST': 'database',
-    'MONGO_PORT': 27017,
-    'MONGO_DBNAME': 'teakwood',
-    'DOMAIN': {'eve-mongoengine': {}}, # sadly this is needed for eve
-    'URL_PREFIX': 'api'
-}
 
-from models import Artist, Show, File
-app = Eve(settings=my_settings)
-# init extension
-ext = EveMongoengine(app)
-# register model to eve
-ext.add_model(Artist)
+from models import Artist, Show, File, Comment
 
 
-from app.views import dashboard
+from main.views import main
 # Blueprints
-app.register_blueprint(dashboard.dashboard)
+app.register_blueprint(main, url_prefix='/main')
+
+
 
 if __name__ == '__main__':
     app.run()

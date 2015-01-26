@@ -11,4 +11,5 @@ RUN apt-get update && apt-get install -y \
 
 ADD requirements.txt /code/
 RUN pip install -r requirements.txt
+RUN pip install pip-tools
 ADD . /code/

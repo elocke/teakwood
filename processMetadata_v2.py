@@ -6,10 +6,10 @@ from datetime import datetime
 from operator import itemgetter
 import requests
 import pprint
+from internetarchive import get_item
 
-
-def processQuick(id):
-    url = 'http://archive.org/metadata/{identifier}'.format(identifier=id)
+def processQuick(archiveid):
+    url = 'http://archive.org/metadata/{identifier}'.format(identifier=archiveid)
     try:
         resp = requests.get(url)
         resp.raise_for_status()
@@ -18,6 +18,7 @@ def processQuick(id):
         log.error(error_msg)
         raise HTTPError(error_msg)
     metadata = resp.content
+    # metadata = get_item(archiveid).metadata
     # for key in metadata:
             # setattr(self, key, metadata[key])
 
@@ -26,6 +27,9 @@ def processQuick(id):
     # jdict = json
     sdict = {'show': {}
         }
+
+    if 'is_collection' in jdict:
+        raise Exception('is a collection')
 
     # Metadata
     meta = jdict['metadata']
@@ -113,7 +117,7 @@ def processQuick(id):
 
     artist = Artist()
     show = Show()
-    print type(odict)
+    # print type(odict)
     artist.name = odict.pop('artist')
 
     show_meta = odict.pop('show')
@@ -125,7 +129,7 @@ def processQuick(id):
                 show.updatedate.append(i)
 
         elif k == 'files':
-            print 'files'
+            # print 'files'
             # what happens when it's all FLACs? keep the doc and hide or exlude as source?
             # for f in show_meta.pop('files'):
             for f in v:
@@ -137,7 +141,7 @@ def processQuick(id):
                 show.files.append(f_obj)
 
         elif k == 'comments':
-            print 'comments'
+            # print 'comments'
             for f in v:
                 f_obj = Comment()
                 for i, j in f.iteritems():
@@ -151,6 +155,10 @@ def processQuick(id):
             setattr(show, k, v)
 
     # artist.shows.append(show)
-    Artist.objects(name=artist.name).update(push__shows=show, upsert=True)
+    try:
+        Artist.objects(name=artist.name).update(push__shows=show, upsert=True)
+        return 'item saved'
+    except e:
+        return 'save fail'
     # artist.save()
     # artist.reload()

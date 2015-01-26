@@ -18,7 +18,8 @@ class Artist(db.Document):
 
 
 class Show(db.EmbeddedDocument):
-  meta = {'allow_inheritance': False,
+  meta = {
+    'allow_inheritance': False,
     'indexes': ['year']}
 
   # INTERNAL FIELDS

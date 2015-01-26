@@ -3,15 +3,15 @@ from redis import Redis
 # from processMetadata import ImportShow
 import time
 import processMetadata_v2
+from internetarchive import search_items
+
+search = search_items('mediatype:etree')
+
 
 redis_conn = Redis('redis')
 q = Queue(connection=redis_conn)
 
-job = q.enqueue(processMetadata_v2.processQuick, 'tlg2006-10-21.mk4v.flac16')
-print job.result
-print q.jobs
-time.sleep(2)
-print job.result
-
-time.sleep(2)
-print job.result
+for result in search:
+	print result['identifier']
+	job = q.enqueue(processMetadata_v2.processQuick, result['identifier'])
+	
