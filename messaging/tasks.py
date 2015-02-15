@@ -1,18 +1,17 @@
-from celery import Celery
+from rq import Queue
+from redis import Redis
+# from processMetadata import ImportShow
+import time
+import processMetadata_v2
+from internetarchive import search_items
 
-app = Celery('tasks', backend='amqp', broker='amqp://')
+search = search_items('mediatype:etree and creator:Spafford')
 
-@app.task(ignore_result=True)
-def print_hello():
-    print 'hello there'
 
-@app.task
-def gen_prime(x):
-    multiples = []
-    results = []
-    for i in xrange(2, x+1):
-        if i not in multiples:
-            results.append(i)
-            for j in xrange(i*i, x+1, i):
-                multiples.append(j)
-    return results
+redis_conn = Redis('redis')
+q = Queue(connection=redis_conn)
+
+for result in search:
+	print result['identifier']
+	job = q.enqueue(processMetadata_v2.processQuick, result['identifier'])
+	
