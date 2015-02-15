@@ -1,0 +1,23 @@
+angular.module('teakwoodApp',['ui.router','ngResource','teakwoodApp.controllers','teakwoodApp.services']);
+
+angular.module('teakwoodApp').config(function($stateProvider,$httpProvider){
+    $stateProvider.state('artists',{
+        url:'/artists',
+        templateUrl:'partials/artists.html',
+        controller:'TeakwoodListController'
+    }).state('viewArtist',{
+       url:'/artists/:id/view',
+       templateUrl:'partials/artist-view.html',
+       controller:'TeakwoodViewController'
+    }).state('newArtist',{
+        url:'/artists/new',
+        templateUrl:'partials/artist-add.html',
+        controller:'TeakwoodCreateController'
+    }).state('editArtist',{
+        url:'/artists/:id/edit',
+        templateUrl:'partials/artist-edit.html',
+        controller:'TeakwoodEditController'
+    });
+}).run(function($state){
+   $state.go('artists');
+});

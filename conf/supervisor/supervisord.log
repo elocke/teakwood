@@ -1,0 +1,27 @@
+2015-02-14 04:49:00,368 CRIT Supervisor running as root (no user in config file)
+2015-02-14 04:49:00,374 INFO supervisord started with pid 7
+2015-02-14 04:49:01,377 INFO spawned: 'teakworker' with pid 10
+2015-02-14 04:49:01,378 INFO spawned: 'flaskapp' with pid 11
+2015-02-14 04:49:01,379 INFO spawned: 'flaskapi' with pid 12
+2015-02-14 04:49:01,718 INFO exited: flaskapp (exit status 1; not expected)
+2015-02-14 04:49:02,719 INFO success: teakworker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2015-02-14 04:49:02,720 INFO spawned: 'flaskapp' with pid 19
+2015-02-14 04:49:02,721 INFO success: flaskapi entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2015-02-14 04:49:03,042 INFO exited: flaskapp (exit status 1; not expected)
+2015-02-14 04:49:05,046 INFO spawned: 'flaskapp' with pid 22
+2015-02-14 04:49:05,368 INFO exited: flaskapp (exit status 1; not expected)
+2015-02-14 04:49:08,373 INFO spawned: 'flaskapp' with pid 25
+2015-02-14 04:49:08,690 INFO exited: flaskapp (exit status 1; not expected)
+2015-02-14 04:49:09,691 INFO gave up: flaskapp entered FATAL state, too many start retries too quickly
+2015-02-14 04:50:26,463 WARN received SIGINT indicating exit request
+2015-02-14 04:50:26,463 INFO waiting for teakworker, flaskapi to die
+2015-02-14 04:50:26,465 INFO stopped: flaskapi (terminated by SIGTERM)
+2015-02-14 04:50:27,475 INFO stopped: teakworker (exit status 0)
+2015-02-14 04:57:51,351 CRIT Supervisor running as root (no user in config file)
+2015-02-14 04:57:51,355 INFO supervisord started with pid 1
+2015-02-14 04:57:52,357 INFO spawned: 'teakworker' with pid 9
+2015-02-14 04:57:52,359 INFO spawned: 'flaskapp' with pid 10
+2015-02-14 04:57:52,361 INFO spawned: 'flaskapi' with pid 11
+2015-02-14 04:57:53,693 INFO success: teakworker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2015-02-14 04:57:53,693 INFO success: flaskapp entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2015-02-14 04:57:53,693 INFO success: flaskapi entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
