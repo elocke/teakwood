@@ -1,19 +1,31 @@
 
 {% block content %}
 <p>yo yo gangsta</p>
-<a ui-sref="newMovie" class="btn-primary btn-lg nodecoration">Add New Movie</a>
-<table class="table movietable">
+
+<!-- <table class="table movietable">
     <tr>
         <td><h3>All Movies</h3></td>
         <td></td>
     </tr>
-    <tr ng-repeat="artist in artists">
+    <tr ng-repeat="artist in artists._items">
         <td>{{artist.name|angular}}</td>
         <td>
             <a class="btn btn-primary" ui-sref="viewArist({id:artist._id})">View</a>
             <a class="btn btn-danger"  ng-click="deleteArtist(artist)">Delete</a>
         </td>
     </tr>
+</table> -->
+<table class="table table-striped">
+  <tbody>
+  <tr ng-repeat="item in items">
+    <td>
+        {{item.name|angular}}
+      <div ng-repeat="(key, value) in item" ng-show="key != '_links'">
+        {{key|angular}}: {{value|angular}}
+        <p>test</p>
+      </div>
+    </td>
+  </tr>
+  </tbody>
 </table>
-
 {% endblock %}

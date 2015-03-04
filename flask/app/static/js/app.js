@@ -1,23 +1,42 @@
-angular.module('teakwoodApp',['ui.router','ngResource','teakwoodApp.controllers','teakwoodApp.services']);
+'use strict';
 
-angular.module('teakwoodApp').config(function($stateProvider,$httpProvider){
-    $stateProvider.state('artists',{
-        url:'/artists',
-        templateUrl:'partials/artists.html',
-        controller:'TeakwoodListController'
-    }).state('viewArtist',{
-       url:'/artists/:id/view',
-       templateUrl:'partials/artist-view.html',
-       controller:'TeakwoodViewController'
-    }).state('newArtist',{
-        url:'/artists/new',
-        templateUrl:'partials/artist-add.html',
-        controller:'TeakwoodCreateController'
-    }).state('editArtist',{
-        url:'/artists/:id/edit',
-        templateUrl:'partials/artist-edit.html',
-        controller:'TeakwoodEditController'
+
+// Declare app level module which depends on filters, and services
+angular.module('teakwoodApp', [
+    'ngRoute',
+    'restangular',
+    'teakwoodApp.controllers',
+    // 'teakwoodApp.directives',
+    // 'teakwoodApp.filters',
+    'teakwoodApp.services'
+  ]).
+  config(['$routeProvider', function($routeProvider) {
+      $routeProvider.when('/', { 
+        controller: 'RootCtrl', 
+        templateUrl: 'partials/artists.html'
+      });
+      $routeProvider.when('/list/:domain', {
+        controller: 'ListCtrl', 
+        templateUrl: 'partials/artist-view.html'
+      });
+      $routeProvider.otherwise({redirectTo:'/'});
+  }]).
+  config(['RestangularProvider', function(RestangularProvider) {
+    // point RestangularProvider.setBaseUrl to your API's URL_PREFIX
+    RestangularProvider.setBaseUrl('http://192.168.1.4:8081/artists');
+    
+    // RestangularProvider.setListTypeIsArray(false);
+    RestangularProvider.setRestangularFields({
+      id: "_id"
     });
-}).run(function($state){
-   $state.go('artists');
-});
+
+    RestangularProvider.addResponseInterceptor(function (data, operation, what, url, response, deferred) {
+    if (operation === 'getList') {
+        var newResponse = response.data._items;
+        // newResponse.paging = response.paging;
+        // newResponse.error = response.error;
+        return newResponse;
+    }
+    return response;
+});      
+  }]);

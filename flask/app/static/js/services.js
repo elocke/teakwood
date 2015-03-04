@@ -1,11 +1,9 @@
-angular.module('teakwoodApp.services',[]).factory('Artist',function($resource){
-    return $resource('http://localhost:8081/artists/:id',{id:'@_id'},{
-        update: {
-            method: 'PUT'
-        }
-    });
-}).service('popupService',function($window){
-    this.showPopup=function(message){
-        return $window.confirm(message);
-    }
-});
+'use strict';
+
+/* Services */
+
+
+// Demonstrate how to register services
+// In this case it is a simple value service.
+angular.module('teakwoodApp.services', []).
+  value('version', '0.1');

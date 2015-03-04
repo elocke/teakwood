@@ -121,7 +121,7 @@ def processQuick(archiveid):
 
     odict = sdict
 
-    artist = Artist()
+    artist = Artists()
     show = Show()
     # print type(odict)
     artist.name = odict.pop('artist')
@@ -162,7 +162,7 @@ def processQuick(archiveid):
 
     # artist.shows.append(show)
     try:
-        Artist.objects(name=artist.name).update(push__shows=show, upsert=True)
+        Artists.objects(name=artist.name).update(push__shows=show, upsert=True)
         return 'item saved'
     except e:
         return 'save fail'

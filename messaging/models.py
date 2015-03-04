@@ -4,7 +4,7 @@ from datetime import datetime
 from mongoengine import *
 
 
-class Artist(Document):
+class Artists(Document):
   meta = {
     'ordering': ['name']
   }

@@ -2,7 +2,8 @@ from eve import Eve
 import datetime
 
 artist_schema = {
-
+    # 'item_title': 'artist',
+    'id_field': 'name',
     # by default the standard item entry point is defined as
     # '/people/<ObjectId>/'. We leave it untouched, and we also enable an
     # additional read-only entry point. This way consumers can also perform GET
@@ -169,7 +170,8 @@ my_settings = {
     'MONGO_DBNAME': 'teakwood',
     'DOMAIN': {
         'artists': artist_schema
-    }
+    },
+    'X_DOMAINS': '*'
     # 'URL_PREFIX': 'api'
 }
 # SERVER_NAME = None

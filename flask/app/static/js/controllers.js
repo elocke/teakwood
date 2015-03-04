@@ -1,43 +1,25 @@
-/**
- * Created by Sandeep on 01/06/14.
- */
-angular.module('teakwoodApp.controllers',[]).controller('TeakwoodListController',function($scope,$state,popupService,$window,Artist){
+'use strict';
 
-    $scope.artists=Artist.query();
+/* Controllers */
 
-    $scope.deleteShow=function(movie){
-        if(popupService.showPopup('Really delete this?')){
-            movie.$delete(function(){
-                $window.location.href='';
-            });
-        }
-    }
+angular.module('teakwoodApp.controllers', []).
 
-}).controller('TeakwoodViewController',function($scope,$stateParams,Artist){
+  controller('RootCtrl', ['$scope', 'Restangular', function ($scope, Restangular) {
+    // $scope.domains = Restangular.all("/").getList().$object;
+    var resource = Restangular.all("/").getList().then(function(items){
+        $scope.items = items;
+    });
+  }]).
 
-    $scope.artist=Artist.get({id:$stateParams.id});
+  controller('ListCtrl', ['$scope', 'Restangular', function ($scope, items) {
+    // if (items._links.next != null) {
+    //   $scope.nextpage = items._links.next.href.replace(items._links.parent.href,'');
+    // }
+    // if (items._links.prev != null) {
+    //   $scope.prevpage = items._links.prev.href.replace(items._links.parent.href,'');
+    // }
+    // $scope.items = items;
+    // $scope.domain = items.;
 
-}).controller('TeakwoodCreateController',function($scope,$state,$stateParams,Artist){
-
-    $scope.artist=new Artist();
-
-    $scope.addArtist=function(){
-        $scope.artist.$save(function(){
-            $state.go('artists');
-        });
-    }
-
-}).controller('TeakwoodEditController',function($scope,$state,$stateParams,Artist){
-
-    $scope.updateArtist=function(){
-        $scope.artist.$update(function(){
-            $state.go('artists');
-        });
-    };
-
-    $scope.loadArtist=function(){
-        $scope.artist=Artist.get({id:$stateParams.id});
-    };
-
-    $scope.loadArtist();
-});
+    $scope.shows = 'poop'
+  }]);

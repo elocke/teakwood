@@ -5,7 +5,7 @@ import time
 import processMetadata_v2
 from internetarchive import search_items
 
-search = search_items('mediatype:etree and creator:Spafford')
+search = search_items('mediatype:etree and creator:TAUK')
 
 
 redis_conn = Redis('redis')
