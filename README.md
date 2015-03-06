@@ -10,7 +10,7 @@ After cloning, run docker-compose up and the environment will start.
 ### API (currently served on localhost:8081)
 - /artists
 - /artists/<artist_name>
-- /shows/<artist_name/
-- /shows/<artist_name>/<date>
+- /shows/'artist_name'/
+- /shows/'artist_name'/'date'
 - /shows 
 
