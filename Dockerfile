@@ -24,3 +24,4 @@ WORKDIR /etc/supervisor/conf.d
 ADD conf/supervisor/supervisord.conf /etc/supervisor/
 # Define default command.
 CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+#CMD ["python", "-u", "/code/flask/api/api.py"]

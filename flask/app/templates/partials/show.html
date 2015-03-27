@@ -1,6 +1,6 @@
 
 {% block content %}
-<p>yo yo gangsta</p>
+<p>show display</p>
 
 <!-- <table class="table movietable">
     <tr>
@@ -19,23 +19,23 @@
   <div class="col-md-12">
 <!--     <table class="table table-striped">
       <tbody> -->
-      <div ng-repeat="item in items">
+      <!-- <div ng-repeat="item in items"> -->
         <!-- <td> -->
-            {{item.name|angular}}
-<!--           <div ng-repeat="(index, show) in item.shows" ng-show="key != '_links'">
+<!--             {{items.creator|angular}} -->
+          <!-- <div ng-repeat="(index, show) in item.files" ng-show="key != '_links'"> -->
             <b>{{show.title|angular}}</b>
             <i>{{show.date|angular}}</i> <br>
             <pre>{{show.description|angular}}</pre>
             <ul>
-              <li ng-repeat="(track, file) in show.files" ng-show="key != '_links'">
+              <li ng-repeat="(track, file) in show.files">
                 <button music-player="play" add-song="file">{{file.title|angular}}</button>
               </li>
-            <!-- </ul> -->
+            <!-- </ul>
           </div> -->
         <!-- </td>
       </tr>
       </tbody>
     </table> -->
-  </div>
+  <!-- </div> -->
 </div>
 {% endblock %}

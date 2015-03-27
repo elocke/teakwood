@@ -40,12 +40,50 @@
       </div><!--/.nav-collapse -->
     </div>
   </div>
+
 	{% block content %}
 	{% endblock %}
 </div>
-<div id="footer">
+<div class="footer navbar-fixed-bottom">
   <div class="container">
-    <p class="text-muted credit">Example courtesy <a href="http://martinbean.co.uk">Martin Bean</a> and <a href="http://ryanfait.com/sticky-footer/">Ryan Fait</a>.</p>
+
+        <!-- init soundManager2 player -->
+        <sound-manager></sound-manager>
+
+        <p>
+            Currently Playing: {{ currentPlaying.title|angular }} by {{ currentPlaying.artist |angular}} ({{ currentPostion|angular }} / {{ currentDuration|angular }})
+        </p>
+
+        <div class="seekBase" seek-track>
+            <div class="seekLoad" ng-style="{width : ( progress + '%' ) }"></div>
+        </div>
+        <br />
+        <button play-music>Play</button>
+        <button pause-music>Pause</button>
+        <button stop-music>Stop</button>
+        <button repeat-music>Repeat ({{ repeat|angular }})</button>
+        <button play-pause-toggle data-play="Play!" data-pause="Pause!">Play Toggle</button>
+
+        Is Playing: {{ isPlaying|angular }}
+        <br/>Volume: {{ volume|angular }} -
+        <button music-volume data-type="increase">+</button>
+        <button music-volume data-type="decrease">-</button>
+        <button mute-music>Mute ({{ mute |angular}})</button>
+        <button prev-track>Prev Track</button>
+        <button next-track>Next Track</button>
+        <button clear-playlist>Clear Playlist</button>
+        <br/>
+        <h5>Playlist</h5>
+        <ul>
+            <li ng-repeat="song in playlist">
+              <a play-from-playlist="song">{{ song.title|angular }}</a>
+              -
+              <a remove-from-playlist="song" data-index="{{index|angular}}">
+                  <small>(remove)</small>
+              </a>
+              <span ng-if="currentPlaying.id == song.id"> - (current)</span>
+            </li>
+        </ul>
   </div>
 </div>
 {% block scripts %}
@@ -56,6 +94,7 @@
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/3.2.0/lodash.min.js"></script>
   <!-- // <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/restangular/1.4.0/restangular.min.js"></script> -->
   <script src="{{ url_for('static', filename='lib/restangular.js') }}"></script>
+  <script src="{{ url_for('static', filename='lib/angular-soundmanager2.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/app.js') }}"></script>
   <script src="{{ url_for('static', filename='js/services.js') }}"></script>  
   <script src="{{ url_for('static', filename='js/controllers.js') }}"></script>  
@@ -88,8 +127,8 @@
 		}
 
 		/* Set the fixed height of the footer here */
-		#footer {
-		  height: 60px;
+		.footer {
+		  height: 120px;
 		  background-color: #f5f5f5;
 		}
 

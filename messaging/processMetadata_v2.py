@@ -10,7 +10,7 @@ from internetarchive import get_item
 from mongoengine import connect
 from models import *
 
-connect('teakwood', host='database', port=27017)
+connect('teakwood', host='db', port=27017)
 
 def getMeta(archiveid):
     url = 'http://archive.org/metadata/{identifier}'.format(identifier=archiveid)

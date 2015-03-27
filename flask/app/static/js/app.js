@@ -5,6 +5,7 @@
 angular.module('teakwoodApp', [
     'ngRoute',
     'restangular',
+    'angularSoundManager',
     'teakwoodApp.controllers',
     // 'teakwoodApp.directives',
     // 'teakwoodApp.filters',
@@ -19,11 +20,15 @@ angular.module('teakwoodApp', [
         controller: 'ListCtrl', 
         templateUrl: 'partials/artist-view.html'
       });
+      $routeProvider.when('/show/:domain', {
+        controller: 'ShowCtrl', 
+        templateUrl: 'partials/show.html'
+      });
       $routeProvider.otherwise({redirectTo:'/'});
   }]).
   config(['RestangularProvider', function(RestangularProvider) {
     // point RestangularProvider.setBaseUrl to your API's URL_PREFIX
-    RestangularProvider.setBaseUrl('http://192.168.1.4:8081/artists');
+    RestangularProvider.setBaseUrl('http://192.168.1.4:8081');
     
     // RestangularProvider.setListTypeIsArray(false);
     RestangularProvider.setRestangularFields({
@@ -32,11 +37,25 @@ angular.module('teakwoodApp', [
 
     RestangularProvider.addResponseInterceptor(function (data, operation, what, url, response, deferred) {
     if (operation === 'getList') {
+        // console.log(response);
         var newResponse = response.data._items;
+        // newResponse.meta = response.data._meta;
+        // newResponse.links = response.data._links;
+        // console.log(newResponse);
         // newResponse.paging = response.paging;
         // newResponse.error = response.error;
         return newResponse;
     }
+    if (operation === 'get') {
+        // console.log(response);
+        var newResponse = response.data;
+        // newResponse.meta = response.data._meta;
+        // newResponse.links = response.data._links;
+        // console.log(newResponse);
+        // newResponse.paging = response.paging;
+        // newResponse.error = response.error;
+        return newResponse;
+    }    
     return response;
 });      
   }]);

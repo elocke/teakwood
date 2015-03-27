@@ -2,9 +2,56 @@ from datetime import datetime
 # from flask import url_for
 # from app import db
 from mongoengine import *
+from mongoengine import signals
+import logging
+
+def handler(event):
+    """Signal decorator to allow use of callback functions as class decorators."""
+
+    def decorator(fn):
+        def apply(cls):
+            event.connect(fn, sender=cls)
+            return cls
+
+        fn.apply = apply
+        return fn
+
+    return decorator
+
+@handler(signals.pre_save)
+def update_count(sender, document, **kwargs):
+    # document.date_count = 192
+    countres = Artists._get_collection().aggregate([{'$match': {'name' : document.name}}, {'$project': {'item': {'name': '$name'}, 'count': { '$size': "$shows" }} }])
+    for x in Artists.objects(name = document.name):
+      print x
+      # for v in x:
+        # print v
+    # document.date_count = count
+    if countres['ok'] == 1:
+      print 'im doing shit'
+      document.count = countres['result'][0]['count']
+    # print document
 
 
+@update_count.apply
 class Artists(Document):
+  # @classmethod
+  # def pre_save(cls, sender, document, **kwargs):
+  #     print 'fuck you im a train'
+  #     document.date_count = 999
+  #     logging.debug("Pre Save: %s" % document.name)
+
+  # @classmethod
+  # def post_save(cls, sender, document, **kwargs):
+  #     logging.debug("Post Save: %s" % document.name)
+  #     print 'fuck you im a train'
+
+  #     if 'created' in kwargs:
+  #         if kwargs['created']:
+  #             logging.debug("Created")
+  #         else:
+  #             logging.debug("Updated")
+
   meta = {
     'ordering': ['name']
   }
@@ -12,6 +59,8 @@ class Artists(Document):
   display_name = StringField()
   shows = ListField(EmbeddedDocumentField('Show'))
   website = URLField()
+  date_count = IntField()
+  count = IntField()
 
   def check_artist(self, artist):
     for names in self.name:
@@ -77,3 +126,5 @@ class Comment(EmbeddedDocument):
   rating = IntField ()  # stars
 
 
+
+# signals.pre_save.connect(Artists.pre_save, sender=Artists)
