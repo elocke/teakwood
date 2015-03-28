@@ -170,7 +170,7 @@ artists = {
     'resource_methods': ['GET', 'POST'],
     'additional_lookup': {
        'url': 'regex("[\w]+")',
-       'field': 'name'
+       'field': 'identifier'
     },
     'schema': artist_schema
 
@@ -204,13 +204,15 @@ artists_shows = {
     # 'id_field': 'identifier',
     'schema': show_schema,
     'datasource': {
-        'source': 'shows'
+        'source': 'shows',
+        'projection': {
+            'identifier': 1,
+            'venue': 1,
+            'date': 1,
+            'title': 1,
+            'location': 1
         }
-    #     'projection': {
-    #         'name': 1,
-    #         'shows': 1
-    #         }
-    # }
+    }
 }
 
 my_settings = {
