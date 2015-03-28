@@ -1,6 +1,8 @@
 <div class="row">
   <div class="col-md-12">
-      <div ng-repeat="item in items">
-            <a href='#'>{{item.date|angular}} - {{item.location|angular}}</a>
-  </div>
+    <ul class="list-unstyled">
+        <li ng-repeat="item in items">
+            <a href='#/show/{{item._id|angular}}'>{{item.date|angular}} - {{item.location|angular}}</a>
+        </li>
+    </ul>
 </div>

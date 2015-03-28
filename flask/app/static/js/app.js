@@ -16,11 +16,11 @@ angular.module('teakwoodApp', [
         controller: 'RootCtrl', 
         templateUrl: 'partials/artists.html'
       });
-      $routeProvider.when('/list/:domain', {
+      $routeProvider.when('/artist/:artist_id', {
         controller: 'ListCtrl', 
         templateUrl: 'partials/artist-view.html'
       });
-      $routeProvider.when('/show/:domain', {
+      $routeProvider.when('/show/:show_id', {
         controller: 'ShowCtrl', 
         templateUrl: 'partials/show.html'
       });
