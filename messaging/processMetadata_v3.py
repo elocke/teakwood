@@ -66,8 +66,8 @@ def perform_post(resource, data):
     return thread
 
 def postArtist(artist):
-    print artist
-    print json.dumps(artist)
+    # print artist
+    # print json.dumps(artist)
     r = perform_post('artists', artist)
     print "artist %s posted, STATUS: %s" % (artist['name'], r.code)
 
@@ -199,6 +199,6 @@ def main(archiveid):
     else:
         show = processShow(metadata)
 
-        show['artist'] = getArtistId(show['creator'])
+        show['artist'] = getArtistId(metadata['metadata']['collection'][0])
         postShow(show)
         # process as show of artist

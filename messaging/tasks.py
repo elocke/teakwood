@@ -5,7 +5,7 @@ import time
 import processMetadata_v3
 from internetarchive import search_items
 
-search = search_items('mediatype:etree and creator:Charm')
+search = search_items('mediatype:etree AND creator:"Blue Turtle Seduction"')
 
 
 redis_conn = Redis('redis')
