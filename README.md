@@ -8,6 +8,9 @@ After cloning, run docker-compose up and the environment will start.
 
 Bash shell is accessible by running docker-compose run workers /bin/bash
 
+## Initializing db
+After running docker-compose up, open a new terminal in the project folder. 
+Run docker-compose run workers python /code/messaging/tasks.py to init db
 
 ### API (currently served on localhost:8080/api)
 - /artists [GET, POST]
@@ -23,3 +26,4 @@ Bash shell is accessible by running docker-compose run workers /bin/bash
 - Main View - /
 - Artist View (List of shows) - /artist/<_id>
 - Show View (Single show) - /show/<_id>
+- RQ dashboard - /rq
