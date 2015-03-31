@@ -20,6 +20,6 @@ Bash shell is accessible by running docker-compose run workers /bin/bash
 [EVE](http://python-eve.org) for reference
 
 ### Angular (http://localhost:8080/
-Main View - /
-Artist View (List of shows) - /artist/<_id>
-Show View (Single show) - /show/<_id>
+- Main View - /
+- Artist View (List of shows) - /artist/<_id>
+- Show View (Single show) - /show/<_id>
