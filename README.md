@@ -6,11 +6,20 @@ Requires [Docker](http://docker.com).
 
 After cloning, run docker-compose up and the environment will start.  
 
+Bash shell is accessible by running docker-compose run workers /bin/bash
 
-### API (currently served on localhost:8081)
-- /artists
-- /artists/<artist_name>
-- /shows/'artist_name'/
-- /shows/'artist_name'/'date'
-- /shows 
 
+### API (currently served on localhost:8080/api)
+- /artists [GET, POST]
+- /artists/<artist_name>/shows [GET]
+- /artists/<_id> [GET, POST]
+- /artists/<_id>/shows [GET, POST]
+- /shows/ [GET, POST]
+- /shows/<_id> [GET, POST]
+
+[EVE](http://python-eve.org) for reference
+
+### Angular (http://localhost:8080/
+Main View - /
+Artist View (List of shows) - /artist/<_id>
+Show View (Single show) - /show/<_id>
