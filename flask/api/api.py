@@ -6,14 +6,14 @@ artist_schema = {
         'name': {
             'type': 'string',
             'minlength': 1,
-            'maxlength': 100,
+            # 'maxlength': 100,
             'required': True,
             'unique': True                
         },
         'display_name': {
             'type': 'string',
-            'minlength': 1,
-            'maxlength': 100
+            'minlength': 1
+            # 'maxlength': 100
         },
         'identifier': {
             'type': 'string'
@@ -42,23 +42,23 @@ show_schema = {
             'type': 'string',
             'required': True,
             'unique': True,
-            'minlength': 1,
-            'maxlength': 100
+            'minlength': 1
+            # 'maxlength': 100
             },                                                                                           
         'title': {
-            'type': 'string',
-            'minlength': 1,
-            'maxlength': 100
+            'type': 'string'
+            # 'minlength': 1,
+            # 'maxlength': 100
             },                                                                                           
         'location': {
-            'type': 'string',
-            'minlength': 1,
-            'maxlength': 100
+            'type': 'string'
+            # 'minlength': 1,
+            # 'maxlength': 100
             },                                                                                           
         'venue': {
-            'type': 'string',
-            'minlength': 1,
-            'maxlength': 100
+            'type': 'string'
+            # 'minlength': 1,
+            # 'maxlength': 100
             },                                                                                           
         'date': {
             'type': 'datetime',
@@ -74,34 +74,34 @@ show_schema = {
             'type': 'string'
             },                                                                           
         'taper': {
-            'type': 'string',
-            'minlength': 1,
-            'maxlength': 100
+            'type': 'string'
+            # 'minlength': 1,
+            # 'maxlength': 100
             },      
         'transferer': {
-            'type': 'string',
-            'minlength': 1,
-            'maxlength': 100
+            'type': 'string'
+            # 'minlength': 1,
+            # 'maxlength': 100
             },
         'creator': {
-            'type': 'string',
-            'minlength': 1,
-            'maxlength': 100
+            'type': 'string'
+            # 'minlength': 1,
+            # 'maxlength': 100
             },                             
         'uploader': {
-            'type': 'string',
-            'minlength': 1,
-            'maxlength': 100
+            'type': 'string'
+            # 'minlength': 1,
+            # 'maxlength': 100
             },      
         'lineage': {
-            'type': 'string',
-            'minlength': 1,
-            'maxlength': 100
+            'type': 'string'
+            # 'minlength': 1,
+            # 'maxlength': 100
             },      
         'source': {
-            'type': 'string',
-            'minlength': 1,
-            'maxlength': 100
+            'type': 'string'
+            # 'minlength': 1,
+            # 'maxlength': 100
             },  
         'files' : {
             'type': 'list',

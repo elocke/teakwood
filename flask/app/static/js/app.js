@@ -28,7 +28,7 @@ angular.module('teakwoodApp', [
   }]).
   config(['RestangularProvider', function(RestangularProvider) {
     // point RestangularProvider.setBaseUrl to your API's URL_PREFIX
-    RestangularProvider.setBaseUrl('http://192.168.1.4:8081');
+    RestangularProvider.setBaseUrl('http://192.168.1.4:8080/api');
     
     // RestangularProvider.setListTypeIsArray(false);
     RestangularProvider.setRestangularFields({

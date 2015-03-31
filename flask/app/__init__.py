@@ -1,6 +1,6 @@
 from flask import Flask
-from flask.ext.mongoengine import MongoEngine
-
+# from flask.ext.mongoengine import MongoEngine
+from flask import render_template
 
 from flask_bootstrap import Bootstrap, WebCDN
 from flask_debugtoolbar import DebugToolbarExtension
@@ -11,10 +11,12 @@ from eve import Eve
 
 # import views
 from flask import make_response
+import os 
 
+print os.getcwd()
 
-
-app = Flask(__name__)
+app = Eve(__name__,settings='settings.py')
+# app.on_fetched_resource_artists += count_shows
 
 def format_exception(tb):
     res = make_response(tb.render_as_text())
@@ -22,22 +24,11 @@ def format_exception(tb):
     return res
 app.jinja_env.exception_formatter = format_exception
 
-
 app.config["MONGODB_SETTINGS"] = {
     "host": "database",
     "port": 27017,
 	"db": "teakwood"
 	}
-
-# app.config.update(
-#     MONGODB_HOST = 'database',
-#     MONGODB_PORT = '27017',
-#     MONGODB_DB = 'teakwood',
-# )
-
-db = MongoEngine(app)
-# db.init_app(app)
-
 
 app.config["SECRET_KEY"] = "r@g3f@c3"
 
@@ -47,8 +38,8 @@ app.config['DEBUG_TB_PANELS'] = (
     'flask.ext.debugtoolbar.panels.headers.HeaderDebugPanel',
     'flask.ext.debugtoolbar.panels.request_vars.RequestVarsDebugPanel',
     'flask.ext.debugtoolbar.panels.template.TemplateDebugPanel',
-    'flask.ext.debugtoolbar.panels.logger.LoggingPanel',
-    'flask.ext.mongoengine.panels.MongoDebugPanel'
+    'flask.ext.debugtoolbar.panels.logger.LoggingPanel'
+    # 'flask.ext.mongoengine.panels.MongoDebugPanel'
 )
 
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
@@ -86,14 +77,12 @@ toolbar = DebugToolbarExtension(app)
 from flask.ext.triangle import Triangle
 Triangle(app)
 
-#from models import Artist, Show, File, Comment
 
-
-from .views.main import main
-from .views.partials import partials
-# Blueprints
-app.register_blueprint(main, url_prefix='/')
-app.register_blueprint(partials, url_prefix='/partials')
+from views.main import main
+from views.partials import partials
+# # Blueprints
+app.register_blueprint(main, url_prefix='/', template_folder='templates')
+app.register_blueprint(partials, url_prefix='/partials', template_folder='templates')
 
 
 if __name__ == '__main__':
