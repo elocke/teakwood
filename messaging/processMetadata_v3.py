@@ -11,9 +11,10 @@ import unirest
 # from mongoengine import connect
 # from models import *
 import sys
+import arrow
 
 # connect('teakwood', host='db', port=27017)
-ENTRY_POINT = 'http://192.168.1.4:8081'
+ENTRY_POINT = 'http://192.168.1.4:8080/api'
 
 
 
@@ -62,20 +63,34 @@ def readResponse(response):
 def perform_post(resource, data):
     headers = {'Content-Type': 'application/json'}
     thread = unirest.post(endpoint(resource), headers=headers, params=json.dumps(data))
-    print thread.code, thread.headers, thread.raw_body
+    # print thread.code, thread.headers, thread.raw_body
+    if thread.code in (422, 404):
+        print 'ERROR processing %s' % data['identifier']
+        print 'RESPONSE %s' % thread.raw_body
+        raise Exception
     return thread
 
 def postArtist(artist):
     # print artist
     # print json.dumps(artist)
-    r = perform_post('artists', artist)
-    print "artist %s posted, STATUS: %s" % (artist['name'], r.code)
+    try:    
+        r = perform_post('artists', artist)
+        print "artist %s posted, STATUS: %s" % (artist['name'], r.code)
+    except Exception, e:
+        print e
+        print 'ERROR processing %s' % artist['name']
+        
 
 def postShow(show):
     print show
     print json.dumps(show)
-    r = perform_post('shows', show)
-    print "show %s posted, STATUS: %s" % (show['identifier'], r.code)
+    try:
+        r = perform_post('shows', show)
+        print "show %s posted, STATUS: %s" % (show['identifier'], r.code)
+    except Exception, e:
+        print e
+        print 'ERROR processing %s' % show['identifier']
+        # print 'RESPONSE %s' % r.raw_body        
 
 def getArtistId(identifier):
     url = endpoint('artists') + identifier
@@ -83,7 +98,8 @@ def getArtistId(identifier):
     thread = unirest.get(url)
     if thread.code == 404:
         # raise('Error getting artist id')
-        sys.exit()
+        return False
+        # sys.exit()
     return thread.body['_id']
 
 def processCollection(metadata):
@@ -91,11 +107,26 @@ def processCollection(metadata):
     meta = metadata['metadata']
     artist_dict['name'] = meta['creator']
     artist_dict['identifier'] = meta['identifier']
-    artist_dict['rights'] = meta['rights']
-    artist_dict['addeddate'] = str(datetime.strptime(meta['addeddate'], "%Y-%m-%d %H:%M:%S").strftime("%a, %d %b %Y %H:%M:%S GMT"))
+    if 'rights' in meta: artist_dict['rights'] = meta['rights']
+    artist_dict['addeddate'] = parseDate(meta['addeddate'])
     print artist_dict['addeddate']
     # artist_dict['addeddate'] = meta['addeddate']
     return artist_dict
+
+
+def parseDate(dateobj):
+    # output_format = "%a, %d %b %Y %H:%M:%S GMT"
+    output_format = "ddd, d MMM YYYY HH:mm:ss"
+    if isinstance(dateobj, list):
+        print arrow.get(dateobj[-1]).format(output_format)
+        # result = str(datetime.strptime(dateobj[-1], "%Y-%m-%d %H:%M:%S").strftime(output_format)) # xxxx-xx-xx xx:xx:xx
+        result = arrow.get(dateobj[-1]).format(output_format)
+    else:
+        print arrow.get(dateobj).format(output_format)        
+        # result = str(datetime.strptime(dateobj, "%Y-%m-%d %H:%M:%S").strftime(output_format)) # xxxx-xx-xx xx:xx:xx
+        result = arrow.get(dateobj).format(output_format)
+    return result + " GMT"
+
 
 def processShow(metadata):
     print datetime.now()
@@ -111,6 +142,7 @@ def processShow(metadata):
 
 
     show_dict['identifier'] = meta['identifier']
+    show_dict['artist_identifier'] = meta['collection'][0]
 
     if 'creator' in meta:
         if isinstance(meta['creator'], list):
@@ -123,18 +155,9 @@ def processShow(metadata):
     if 'venue' in meta: show_dict['venue'] = meta['venue']
     # if 'year' in meta: show_dict['year'] = meta['year']
 
-    if 'date' in meta:
-        show_dict['date'] = str(datetime.strptime(meta['date'], "%Y-%m-%d").strftime("%a, %d %b %Y %H:%M:%S GMT"))  # date formatting? xxxx-xx-xx
-    if 'addeddate' in meta:
-        show_dict['addeddate'] = str(datetime.strptime(meta['addeddate'], "%Y-%m-%d %H:%M:%S").strftime("%a, %d %b %Y %H:%M:%S GMT")) # xxxx-xx-xx xx:xx:xx
-
-    if 'updatedate' in meta:
-        show_dict['updatedate'] = []
-        if isinstance(meta['updatedate'], list):
-            for date in meta['updatedate']:
-                show_dict['updatedate'].append(str(datetime.strptime(date, "%Y-%m-%d %H:%M:%S").strftime("%a, %d %b %Y %H:%M:%S GMT"))) # xxxx-xx-xx xx:xx:xx
-        else:
-            show_dict['updatedate'].append(str(datetime.strptime(meta['updatedate'], "%Y-%m-%d %H:%M:%S").strftime("%a, %d %b %Y %H:%M:%S GMT"))) # xxxx-xx-xx xx:xx:xx
+    if 'date' in meta: show_dict['date'] = parseDate(meta['date'])
+    if 'addeddate' in meta: show_dict['addeddate'] = parseDate(meta['addeddate'])        
+    if 'updatedate' in meta: show_dict['updatedate'] = parseDate(meta['updatedate'])        
 
     if 'description' in meta: show_dict['description'] = meta['description']
 
@@ -177,7 +200,7 @@ def processShow(metadata):
         show_dict['comments'] = []
         for review in reviews:
             tempd = {}
-            tempd['date'] = str(datetime.strptime(review['createdate'], "%Y-%m-%d %H:%M:%S").strftime("%a, %d %b %Y %H:%M:%S GMT"))
+            tempd['date'] = parseDate(review['createdate'])
             tempd['title'] = review['reviewtitle']
             tempd['content'] = review['reviewbody']
             tempd['reviewer'] = review['reviewer']
@@ -191,6 +214,7 @@ def processShow(metadata):
 def main(archiveid):
     metadata = getMeta(archiveid)
 
+
     if 'is_collection' in metadata:
         # process as artist
         artist = processCollection(metadata)
@@ -198,7 +222,10 @@ def main(archiveid):
         # raise Exception('is a collection')
     else:
         show = processShow(metadata)
-
-        show['artist'] = getArtistId(metadata['metadata']['collection'][0])
+        show['artist'] = getArtistId(show['artist_identifier'])
         postShow(show)
         # process as show of artist
+
+if __name__ == '__main__':
+    args = sys.argv[1]
+    main(args)
