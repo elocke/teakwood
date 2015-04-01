@@ -4,6 +4,8 @@ from flask import render_template
 
 from flask_bootstrap import Bootstrap, WebCDN
 from flask_debugtoolbar import DebugToolbarExtension
+from flask.ext.bower import Bower
+
 import datetime
 # import mongoengine
 from eve import Eve
@@ -51,6 +53,7 @@ Bootstrap(app)
 app.extensions['bootstrap']['cdns']['jquery'] = WebCDN(
     '//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/'
 )
+Bower(app)
 
 # from flask.ext.assets import Environment, Bundle
 # assets = Environment(app)

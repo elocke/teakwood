@@ -37,7 +37,7 @@ angular.module('teakwoodApp', [
 
     RestangularProvider.addResponseInterceptor(function (data, operation, what, url, response, deferred) {
     if (operation === 'getList') {
-        // console.log(response);
+        console.log(response);
         var newResponse = response.data._items;
         // newResponse.meta = response.data._meta;
         // newResponse.links = response.data._links;
