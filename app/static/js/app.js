@@ -6,12 +6,14 @@ angular.module('teakwoodApp', [
     'ngRoute',
     'restangular',
     'angularSoundManager',
-    'teakwoodApp.controllers',
+    'ui.bootstrap',
+    'teakwoodApp.controllers'
     // 'teakwoodApp.directives',
     // 'teakwoodApp.filters',
-    'teakwoodApp.services'
+    // 'teakwoodApp.services'
   ]).
   config(['$routeProvider', function($routeProvider) {
+      console.log('hi')
       $routeProvider.when('/', { 
         controller: 'RootCtrl', 
         templateUrl: 'partials/artists.html'

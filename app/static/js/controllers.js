@@ -7,7 +7,7 @@ angular.module('teakwoodApp.controllers', []).
   controller('RootCtrl', ['$scope', 'Restangular', function ($scope, Restangular) {
     // $scope.domains = Restangular.all("/").getList().$object;
     var resource = Restangular.all('artists').getList().then(function(items){
-    // console.log(items)
+    console.log(items)
     $scope.items = items;
     angular.forEach(items, function(item, key0){
         console.log(item);

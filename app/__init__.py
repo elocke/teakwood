@@ -2,8 +2,8 @@ from flask import Flask
 # from flask.ext.mongoengine import MongoEngine
 from flask import render_template
 
-from flask_bootstrap import Bootstrap, WebCDN
-from flask_debugtoolbar import DebugToolbarExtension
+# from flask_bootstrap import Bootstrap, WebCDN
+from flask.ext.debugtoolbar import DebugToolbarExtension
 from flask.ext.bower import Bower
 
 import datetime
@@ -16,9 +16,48 @@ from flask import make_response
 import os 
 
 print os.getcwd()
+from bson.objectid import ObjectId
+import json 
 
-app = Eve(__name__,settings='settings.py')
-# app.on_fetched_resource_artists += count_shows
+app = Eve(__name__,settings='/code/app/settings.py')
+
+def countArtistShowCt(items):
+    print items
+    for item in items:
+        if item['_status'] == 'OK':
+            artists = app.data.driver.db['artists']
+            shows = app.data.driver.db['shows']
+            artist_id = ObjectId(item['artist'])
+            artist = artists.find_one({'_id': artist_id})
+            count = shows.find({'artist': artist_id}).count()
+            url = '/api/artists/' + str(artist_id)
+            etag = str(artist['_etag'])
+            print artist_id, count, artist, url, etag
+            r = app.test_client().patch(url, data={"show_count": count}, content_type='application/json', headers={'IF_MATCH': etag})
+            print r.status_code, r.headers, r.data
+
+
+def debugPatch(item, original):
+    print item
+
+
+app.on_inserted_shows += countArtistShowCt
+app.on_update_artists += debugPatch
+
+
+
+import logging
+from logging import FileHandler
+from logging import Formatter
+file_handler = FileHandler('../logs/flask.log')
+file_handler.setLevel(logging.ERROR)
+file_handler.setFormatter(Formatter(
+    '%(asctime)s %(levelname)s: %(message)s '
+    '[in %(pathname)s:%(lineno)d]'
+))
+app.logger.addHandler(file_handler)
+
+
 
 def format_exception(tb):
     res = make_response(tb.render_as_text())
@@ -45,14 +84,15 @@ app.config['DEBUG_TB_PANELS'] = (
 )
 
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+app.config['DEBUG_TB_TEMPLATE_EDITOR_ENABLED'] = True
 app.debug = True
 app.url_map.strict_slashes = False
 
 # Setup Bootstrap
-Bootstrap(app)
-app.extensions['bootstrap']['cdns']['jquery'] = WebCDN(
-    '//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/'
-)
+# Bootstrap(app)
+# app.extensions['bootstrap']['cdns']['jquery'] = WebCDN(
+#     '//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/'
+# )
 Bower(app)
 
 # from flask.ext.assets import Environment, Bundle

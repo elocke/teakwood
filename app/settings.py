@@ -22,6 +22,9 @@ artist_schema = {
         },
         'refreshcount': {
             'type': 'integer'
+        },
+        'show_count': {
+            'type': 'integer'
         }
 }
 
@@ -234,7 +237,8 @@ DOMAIN = {
 } 
 URL_PREFIX = 'api'
 
-# SERVER_NAME = None
 
 def count_shows(response):   
     pass
+
+    
