@@ -1,7 +1,7 @@
 Babel==1.3
 Cerberus==0.8.1
 Cython==0.22
-Eve==0.5.4-dev
+Eve==0.5.3
 Events==0.2.1
 Flask==0.10.1
 Flask-Assets==0.10
@@ -13,6 +13,7 @@ Flask-Script==2.0.5
 Flask-Triangle==0.5.4
 Flask-Views==0.2.1
 Flask-WTF==0.11
+Flask_Bower==1.1.1
 Jinja2==2.7.3
 MarkupSafe==0.23
 PyYAML==3.10
