@@ -7,10 +7,10 @@ angular.module('teakwoodApp', [
     'restangular',
     'angularSoundManager',
     'ui.bootstrap',
-    'teakwoodApp.controllers'
-    // 'teakwoodApp.directives',
-    // 'teakwoodApp.filters',
-    // 'teakwoodApp.services'
+    'teakwoodApp.controllers',
+    'teakwoodApp.directives',
+    'teakwoodApp.filters',
+    'teakwoodApp.services'
   ]).
   config(['$routeProvider', function($routeProvider) {
       console.log('hi')
@@ -29,20 +29,17 @@ angular.module('teakwoodApp', [
       $routeProvider.otherwise({redirectTo:'/'});
   }]).
   config(['RestangularProvider', function(RestangularProvider) {
-    // point RestangularProvider.setBaseUrl to your API's URL_PREFIX
     RestangularProvider.setBaseUrl('http://192.168.1.4:8080/api');
-    
-    // RestangularProvider.setListTypeIsArray(false);
     RestangularProvider.setRestangularFields({
       id: "_id"
     });
 
     RestangularProvider.addResponseInterceptor(function (data, operation, what, url, response, deferred) {
     if (operation === 'getList') {
-        console.log(response);
+        // console.log(response);
         var newResponse = response.data._items;
-        // newResponse.meta = response.data._meta;
-        // newResponse.links = response.data._links;
+        newResponse.meta = response.data._meta;
+        newResponse.links = response.data._links;
         // console.log(newResponse);
         // newResponse.paging = response.paging;
         // newResponse.error = response.error;

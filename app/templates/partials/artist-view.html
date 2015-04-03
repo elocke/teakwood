@@ -5,4 +5,10 @@
             <a href='#/show/{{item._id|angular}}'>{{item.date|angular}} - {{item.location|angular}}</a>
         </li>
     </ul>
+	<pagination total-items="totalItems" items-per-page="25" ng-change="pageChanged()" ng-model="currentPage"></pagination>
+		<p>
+		 Total items: {{totalItems|angular}}<br />
+		 Items per page: {{meta.max_results|angular}}<br />
+		 Current Page: {{currentPage|angular}}
+		</p>    
 </div>
