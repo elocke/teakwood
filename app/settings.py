@@ -227,7 +227,7 @@ MONGO_DBNAME = 'teakwood'
 X_DOMAINS = '*'
 DEBUG = True
 HATEOAS = False
-# 'DATE_FORMAT': '%Y-%M-%D %H:%M:%S',
+DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
 RESOURCE_METHODS = ['GET', 'POST']
 ITEM_METHODS =['GET', 'PATCH', 'PUT', 'DELETE']
 DOMAIN = {
