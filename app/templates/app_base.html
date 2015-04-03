@@ -13,69 +13,23 @@
     {%- endblock metas %}
 
     {%- block styles %}
+      <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.4/superhero/bootstrap.min.css" rel="stylesheet">    
     <style>
-        /* Sticky footer styles
-        -------------------------------------------------- */
-
-        html,
-        body {
-          height: 100%;
-          /* The html and body elements cannot have any padding or margin. */
-        }
-
-        /* Wrapper for page content to push down footer */
-        #wrap {
-          min-height: 100%;
-          height: auto !important;
-          height: 100%;
-          /* Negative indent footer by its height */
-          margin: 0 auto -60px;
-          /* Pad bottom by footer height */
-          padding: 0 0 60px;
-        }
-
-        /* Set the fixed height of the footer here */
-        .footer {
-          height: 120px;
-          background-color: #f5f5f5;
-        }
-
-
-        /* Custom page CSS
-        -------------------------------------------------- */
-        /* Not required for template or sticky footer method. */
-
-        #wrap > .container {
-          padding: 60px 15px 0;
-        }
-        .container .credit {
-          margin: 20px 0;
-        }
-
-        #footer > .container {
-          padding-left: 15px;
-          padding-right: 15px;
-        }
-
-        code {
-          font-size: 80%;
-        }
-
+        body {  }
         .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
         
       </style>
-      <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.4/superhero/bootstrap.min.css" rel="stylesheet">
-      <!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet"> -->
+
     {%- endblock styles %}
     {%- endblock head %}
   </head>
   <body{% block body_attribs %}{% endblock body_attribs %}>
     {% block body -%}
-      <div id="wrap">
-    {% block navbar %}
+        {% block navbar %}
         <!-- Fixed navbar -->
-        <div class="navbar navbar-default navbar-fixed-top">
+        <nav class="navbar navbar-default navbar-fixed-top">
+        <!-- <nav class="page-row"> -->
           <div class="container">
             <div class="navbar-header">
               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -105,13 +59,60 @@
               </ul>
             </div><!--/.nav-collapse -->
           </div>
-        </div>
-
+        </nav>
     {%- endblock navbar %}
 
     {% block content -%}
+    <main class="container">
+    </main>    
     {%- endblock content %}
 
+    {%- block footer %}
+    <footer class="footer navbar navbar-fixed-bottom">
+      <div class="container">
+        <!-- init soundManager2 player -->
+        <sound-manager></sound-manager>
+
+        <p>
+            Currently Playing: {{ currentPlaying.title|angular }} by {{ currentPlaying.artist |angular}} ({{ currentPostion|angular }} / {{ currentDuration|angular }})
+        </p>
+
+        <div class="seekBase" seek-track>
+            <div class="seekLoad" ng-style="{width : ( progress + '%' ) }"></div>
+        </div>
+        <br />
+        <!-- <button class="btn btn-primary"  play-music>Play</button> -->
+        <!-- <button class="btn btn-primary"  pause-music>Pause</button> -->
+        <!-- <button class="btn btn-primary"  stop-music>Stop</button> -->
+        <!-- <button class="btn btn-primary"  repeat-music>Repeat ({{ repeat|angular }})</button> -->
+        <button class="btn btn-primary"  play-pause-toggle data-play="Play!" data-pause="Pause!">Play Toggle</button>
+
+        Is Playing: {{ isPlaying|angular }}
+        <br/>Volume: {{ volume|angular }} -
+        <button class="btn btn-primary"  music-volume data-type="increase">+</button>
+        <button class="btn btn-primary"  music-volume data-type="decrease">-</button>
+        <button class="btn btn-primary"  mute-music>Mute ({{ mute |angular}})</button>
+        <button class="btn btn-primary"  prev-track>Prev Track</button>
+        <button class="btn btn-primary"  next-track>Next Track</button>
+        <button class="btn btn-primary" clear-playlist>Clear Playlist</button>
+        <br/>
+        <div id="playlist">
+          <h5>Playlist</h5>
+          <ul>
+              <li ng-repeat="song in playlist">
+                <a play-from-playlist="song">{{ song.title|angular }}</a>
+                -
+                <a remove-from-playlist="song" data-index="{{index|angular}}">
+                    <small>(remove)</small>
+                </a>
+                <span ng-if="currentPlaying.id == song.id"> - (current)</span>
+              </li>
+          </ul>
+        </div>
+      </div>
+    </footer>   
+    {% endblock footer -%}    
+    {%- endblock body %}
     {% block scripts %}
       <script src="{{ url_for('bower.static', filename='angular/angular.min.js') }}"></script>
       <script src="{{ url_for('bower.static', filename='angular-route/angular-route.min.js') }}"></script>
@@ -124,54 +125,7 @@
       <script src="{{ url_for('static', filename='js/controllers.js') }}"></script>  
       <script src="{{ url_for('static', filename='js/filters.js') }}"></script>
       <script src="{{ url_for('static', filename='js/directives.js') }}"></script>
-    {%- endblock scripts %}
-
-    {%- block footer %}
-      <div class="footer navbar-fixed-bottom">
-        <div class="container">
-
-              <!-- init soundManager2 player -->
-              <sound-manager></sound-manager>
-
-              <p>
-                  Currently Playing: {{ currentPlaying.title|angular }} by {{ currentPlaying.artist |angular}} ({{ currentPostion|angular }} / {{ currentDuration|angular }})
-              </p>
-
-              <div class="seekBase" seek-track>
-                  <div class="seekLoad" ng-style="{width : ( progress + '%' ) }"></div>
-              </div>
-              <br />
-              <button play-music>Play</button>
-              <button pause-music>Pause</button>
-              <button stop-music>Stop</button>
-              <button repeat-music>Repeat ({{ repeat|angular }})</button>
-              <button play-pause-toggle data-play="Play!" data-pause="Pause!">Play Toggle</button>
-
-              Is Playing: {{ isPlaying|angular }}
-              <br/>Volume: {{ volume|angular }} -
-              <button music-volume data-type="increase">+</button>
-              <button music-volume data-type="decrease">-</button>
-              <button mute-music>Mute ({{ mute |angular}})</button>
-              <button prev-track>Prev Track</button>
-              <button next-track>Next Track</button>
-              <button clear-playlist>Clear Playlist</button>
-              <br/>
-              <h5>Playlist</h5>
-              <ul>
-                  <li ng-repeat="song in playlist">
-                    <a play-from-playlist="song">{{ song.title|angular }}</a>
-                    -
-                    <a remove-from-playlist="song" data-index="{{index|angular}}">
-                        <small>(remove)</small>
-                    </a>
-                    <span ng-if="currentPlaying.id == song.id"> - (current)</span>
-                  </li>
-              </ul>
-        </div>
-      </div>    
-    {% endblock footer -%}
-    </div>
-    {%- endblock body %}
+    {%- endblock scripts %}    
   </body>
 {%- endblock html %}
 </html>
