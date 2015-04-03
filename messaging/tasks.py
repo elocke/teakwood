@@ -20,6 +20,7 @@ def queueSearch(search_string):
 # Small Samples
 queueSearch('mediatype:etree AND (creator:Spafford OR creator:"Perpetual Groove" OR creator:Zoogma OR creator:"Mountain Standard Time")')
 
+queueSearch('mediatype:etree AND (creator:Lotus OR creator:"New Monsoon")')
 
 
 # Full Artist Load
