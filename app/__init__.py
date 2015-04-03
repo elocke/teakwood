@@ -1,23 +1,16 @@
 from flask import Flask
-# from flask.ext.mongoengine import MongoEngine
 from flask import render_template
+from flask import make_response
+from bson.objectid import ObjectId
 
-# from flask_bootstrap import Bootstrap, WebCDN
 from flask.ext.debugtoolbar import DebugToolbarExtension
 from flask.ext.bower import Bower
 
 import datetime
-# import mongoengine
 from eve import Eve
-# from eve_mongoengine import EveMongoengine
-
-# import views
-from flask import make_response
 import os 
-
-print os.getcwd()
-from bson.objectid import ObjectId
 import json 
+
 
 app = Eve(__name__,settings='/code/app/settings.py')
 
@@ -33,7 +26,13 @@ def countArtistShowCt(items):
             url = '/api/artists/' + str(artist_id)
             etag = str(artist['_etag'])
             print artist_id, count, artist, url, etag
-            r = app.test_client().patch(url, data={"show_count": count}, content_type='application/json', headers={'IF_MATCH': etag})
+            print {'IF_MATCH': etag}
+            r = app.test_client().patch(url, 
+                data=json.dumps({"show_count": count}), 
+                content_type='application/json', 
+                headers={
+                'IF_MATCH': etag
+                })
             print r.status_code, r.headers, r.data
 
 
@@ -49,7 +48,7 @@ app.on_update_artists += debugPatch
 import logging
 from logging import FileHandler
 from logging import Formatter
-file_handler = FileHandler('../logs/flask.log')
+file_handler = FileHandler('/code/logs/flask.log')
 file_handler.setLevel(logging.ERROR)
 file_handler.setFormatter(Formatter(
     '%(asctime)s %(levelname)s: %(message)s '
