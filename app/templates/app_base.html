@@ -15,7 +15,38 @@
     {%- block styles %}
       <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.4/superhero/bootstrap.min.css" rel="stylesheet">    
     <style>
-        body {  }
+    body {
+        overflow: hidden;
+    }
+    .body-content {
+        max-height: calc(100% - 120px);
+        overflow-y: scroll;
+        padding: 0px 10% !important;
+        margin-top: 40px !important;
+    }
+
+
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+header {
+    width: 100%;
+    height: 40px;
+    background: red;
+    position: fixed;
+    top: 0;
+}
+
+footer {
+    width: 100%;
+    height: 120px;
+    background: red;
+    position: fixed;
+    bottom: 0;
+}
         .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
         
@@ -28,48 +59,51 @@
     {% block body -%}
         {% block navbar %}
         <!-- Fixed navbar -->
-        <nav class="navbar navbar-default navbar-fixed-top">
+        <header>
         <!-- <nav class="page-row"> -->
-          <div class="container">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="#">Project Teakwood</a>
+          <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Project Teakwood</a>
+              </div>
+              <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                  <li class="active"><a href="#/">Home</a></li>
+                  <li><a href="#about">About</a></li>
+                  <li><a href="#contact">Contact</a></li>
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="#">Action</a></li>
+                      <li><a href="#">Another action</a></li>
+                      <li><a href="#">Something else here</a></li>
+                      <li class="divider"></li>
+                      <li class="dropdown-header">Nav header</li>
+                      <li><a href="#">Separated link</a></li>
+                      <li><a href="#">One more separated link</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div><!--/.nav-collapse -->
             </div>
-            <div class="collapse navbar-collapse">
-              <ul class="nav navbar-nav">
-                <li class="active"><a href="#/">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li class="dropdown-header">Nav header</li>
-                    <li><a href="#">Separated link</a></li>
-                    <li><a href="#">One more separated link</a></li>
-                  </ul>
-                </li>
-              </ul>
-            </div><!--/.nav-collapse -->
-          </div>
-        </nav>
+          </nav>
+        </header>
     {%- endblock navbar %}
 
+    <main class="container-fluid body-content">
     {% block content -%}
-    <main class="container">
-    </main>    
     {%- endblock content %}
+    </main>    
 
     {%- block footer %}
-    <footer class="footer navbar navbar-fixed-bottom">
-      <div class="container">
+
+    <footer class="navbar navbar-default navbar-fixed-bottom">
+            <div class="container">
         <!-- init soundManager2 player -->
         <sound-manager></sound-manager>
 
@@ -80,24 +114,25 @@
         <div class="seekBase" seek-track>
             <div class="seekLoad" ng-style="{width : ( progress + '%' ) }"></div>
         </div>
-        <br />
         <!-- <button class="btn btn-primary"  play-music>Play</button> -->
         <!-- <button class="btn btn-primary"  pause-music>Pause</button> -->
         <!-- <button class="btn btn-primary"  stop-music>Stop</button> -->
         <!-- <button class="btn btn-primary"  repeat-music>Repeat ({{ repeat|angular }})</button> -->
-        <button class="btn btn-primary"  play-pause-toggle data-play="Play!" data-pause="Pause!">Play Toggle</button>
 
         Is Playing: {{ isPlaying|angular }}
         <br/>Volume: {{ volume|angular }} -
-        <button class="btn btn-primary"  music-volume data-type="increase">+</button>
-        <button class="btn btn-primary"  music-volume data-type="decrease">-</button>
-        <button class="btn btn-primary"  mute-music>Mute ({{ mute |angular}})</button>
-        <button class="btn btn-primary"  prev-track>Prev Track</button>
-        <button class="btn btn-primary"  next-track>Next Track</button>
-        <button class="btn btn-primary" clear-playlist>Clear Playlist</button>
-        <br/>
-        <div id="playlist">
+        <div class="center-block">
+          <button class="btn btn-primary btn-sm"  music-volume data-type="increase">+</button>
+          <button class="btn btn-primary btn-sm"  music-volume data-type="decrease">-</button>
+          <button class="btn btn-primary btn-sm"  mute-music>Mute ({{ mute |angular}})</button>
+          <button class="btn btn-primary btn-sm"  prev-track>Prev Track</button>
+          <button class="btn btn-primary btn-sm"  play-pause-toggle data-play="Play!" data-pause="Pause!">Play Toggle</button>
+          <button class="btn btn-primary btn-sm"  next-track>Next Track</button>
+        </div>
+
+                <div class="container" id="playlist">
           <h5>Playlist</h5>
+          <button class="btn btn-primary btn-sm" clear-playlist>Clear Playlist</button>          
           <ul>
               <li ng-repeat="song in playlist">
                 <a play-from-playlist="song">{{ song.title|angular }}</a>

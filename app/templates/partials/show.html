@@ -1,41 +1,16 @@
 
 {% block content %}
 <p>show display</p>
-
-<!-- <table class="table movietable">
-    <tr>
-        <td><h3>All Movies</h3></td>
-        <td></td>
-    </tr>
-    <tr ng-repeat="artist in artists._items">
-        <td>{{artist.name|angular}}</td>
-        <td>
-            <a class="btn btn-primary" ui-sref="viewArist({id:artist._id})">View</a>
-            <a class="btn btn-danger"  ng-click="deleteArtist(artist)">Delete</a>
-        </td>
-    </tr>
-</table> -->
 <div class="row">
   <div class="col-md-12">
-<!--     <table class="table table-striped">
-      <tbody> -->
-      <!-- <div ng-repeat="item in items"> -->
-        <!-- <td> -->
-<!--             {{items.creator|angular}} -->
-          <!-- <div ng-repeat="(index, show) in item.files" ng-show="key != '_links'"> -->
-            <b>{{show.title|angular}}</b>
-            <i>{{show.date|angular}}</i> <br>
-            <pre>{{show.description|angular}}</pre>
-            <ul>
-              <li ng-repeat="(track, file) in show.files">
-                <button class="btn btn-primary" music-player="play" add-song="file">{{file.title|angular}}</button>
-              </li>
-            <!-- </ul>
-          </div> -->
-        <!-- </td>
-      </tr>
-      </tbody>
-    </table> -->
-  <!-- </div> -->
+    <b>{{show.title|angular}}</b>
+    <i>{{show.date|angular}}</i> <br>
+    <pre>{{show.description|angular}}</pre>
+    <ul>
+      <li ng-repeat="(track, file) in show.files">
+        <button class="btn btn-default btn-sm" music-player="play" add-song="file">{{file.title|angular}}</button>
+      </li>
+    </ul>
+  </div>
 </div>
 {% endblock %}
