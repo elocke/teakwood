@@ -26,31 +26,38 @@
     }
 
 
-html, body {
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-}
-header {
-    width: 100%;
-    height: 40px;
-    background: red;
-    position: fixed;
-    top: 0;
-}
+    html, body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    header {
+        width: 100%;
+        height: 40px;
+        background: red;
+        position: fixed;
+        top: 0;
+    }
 
-footer {
-    width: 100%;
-    height: 120px;
-    background: red;
-    position: fixed;
-    bottom: 0;
-}
-        .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+    footer {
+        width: 100%;
+        height: 120px;
+        background: red;
+        position: fixed;
+        bottom: 0;
+    }
 
-        
-      </style>
+    #playlist {
+      position:absolute;
+      bottom:300px;
+      right:0;    
+      width:300px;
+      height: auto;
+      background:rgba(112,141,145,0.5);
+    }
+    .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+    </style>
 
     {%- endblock styles %}
     {%- endblock head %}
@@ -103,10 +110,9 @@ footer {
     {%- block footer %}
 
     <footer class="navbar navbar-default navbar-fixed-bottom">
-            <div class="container">
+      <div class="container">
         <!-- init soundManager2 player -->
         <sound-manager></sound-manager>
-
         <p>
             Currently Playing: {{ currentPlaying.title|angular }} by {{ currentPlaying.artist |angular}} ({{ currentPostion|angular }} / {{ currentDuration|angular }})
         </p>
@@ -129,24 +135,22 @@ footer {
           <button class="btn btn-primary btn-sm"  play-pause-toggle data-play="Play!" data-pause="Pause!">Play Toggle</button>
           <button class="btn btn-primary btn-sm"  next-track>Next Track</button>
         </div>
-
-                <div class="container" id="playlist">
-          <h5>Playlist</h5>
-          <button class="btn btn-primary btn-sm" clear-playlist>Clear Playlist</button>          
-          <ul>
-              <li ng-repeat="song in playlist">
-                <a play-from-playlist="song">{{ song.title|angular }}</a>
-                -
-                <a remove-from-playlist="song" data-index="{{index|angular}}">
-                    <small>(remove)</small>
-                </a>
-                <span ng-if="currentPlaying.id == song.id"> - (current)</span>
-              </li>
-          </ul>
-        </div>
       </div>
     </footer>   
-    {% endblock footer -%}    
+    {% endblock footer -%}
+    <div class="container" id="playlist">
+      <h5>Playlist  <span clear-playlist>[Clear Playlist]</span></h5>        
+      <ul>
+          <li ng-repeat="song in playlist">
+            <a play-from-playlist="song">{{ song.title|angular }}</a>
+            -
+            <a remove-from-playlist="song" data-index="{{index|angular}}">
+                <small>(remove)</small>
+            </a>
+            <span ng-if="currentPlaying.id == song.id"> - (current)</span>
+          </li>
+      </ul>
+    </div>        
     {%- endblock body %}
     {% block scripts %}
       <script src="{{ url_for('bower.static', filename='angular/angular.min.js') }}"></script>
