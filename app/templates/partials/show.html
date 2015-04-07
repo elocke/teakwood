@@ -1,14 +1,18 @@
 
 {% block content %}
-<p>show display</p>
 <div class="row">
   <div class="col-md-12">
     <b>{{show.title|angular}}</b>
     <i>{{show.date|angular}}</i> <br>
+  </div>
+<div class="row">
+  <div class="col-md-6">
     <pre>{{show.description|angular}}</pre>
-    <ul>
-      <li ng-repeat="(track, file) in show.files">
-        <button class="btn btn-default btn-sm" music-player="play" add-song="file">{{file.title|angular}}</button>
+  </div>
+  <div class="col-md-6">
+    <ul ng-repeat="(key, value) in show.files">
+      <li>
+        <button class="btn btn-default btn-sm" music-player="play" add-song="file" all-songs="show.files" data-type="addToPlaylist" >{{value.title|angular}}</button>
       </li>
     </ul>
   </div>
