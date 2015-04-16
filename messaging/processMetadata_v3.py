@@ -12,7 +12,7 @@ import unirest
 # from models import *
 import sys
 import arrow
-
+import time 
 # connect('teakwood', host='db', port=27017)
 ENTRY_POINT = 'http://192.168.1.4:8080/api'
 
@@ -40,7 +40,7 @@ def endpoint(resource):
     return '%s/%s/' % (ENTRY_POINT, resource)
 
 def readResponse(response):
-    print response
+    # print response
     response.code # The HTTP status code
     response.headers # The HTTP headers
     response.body # The parsed response
@@ -65,7 +65,7 @@ def perform_post(resource, data):
     thread = unirest.post(endpoint(resource), headers=headers, params=json.dumps(data))
     # print thread.code, thread.headers, thread.raw_body
     if thread.code in (422, 404):
-        print 'ERROR processing %s' % data['identifier']
+        print 'ERROR in POST of %s' % data['identifier']
         print 'RESPONSE %s' % thread.raw_body
         raise Exception
     return thread
@@ -76,31 +76,34 @@ def postArtist(artist):
     try:    
         r = perform_post('artists', artist)
         print "artist %s posted, STATUS: %s" % (artist['name'], r.code)
+        return r
     except Exception, e:
         print e
-        print 'ERROR processing %s' % artist['name']
+        print 'ERROR posting artist:  %s' % artist['name']
         
 
 def postShow(show):
-    print show
-    print json.dumps(show)
+    # print show
+    # print json.dumps(show)
     try:
         r = perform_post('shows', show)
         print "show %s posted, STATUS: %s" % (show['identifier'], r.code)
+        return r
     except Exception, e:
         print e
-        print 'ERROR processing %s' % show['identifier']
+        print 'ERROR posting show:  %s' % show['identifier']
         # print 'RESPONSE %s' % r.raw_body        
 
 def getArtistId(identifier):
     url = endpoint('artists') + identifier
-    print url
+    # print url
     thread = unirest.get(url)
     if thread.code == 404:
         # raise('Error getting artist id')
         return False
         # sys.exit()
-    return thread.body['_id']
+    else:
+        return thread.body['_id']
 
 def processCollection(metadata):
     artist_dict = {}
@@ -109,23 +112,25 @@ def processCollection(metadata):
     artist_dict['identifier'] = meta['identifier']
     if 'rights' in meta: artist_dict['rights'] = meta['rights']
     artist_dict['addeddate'] = parseDate(meta['addeddate'])
-    print artist_dict['addeddate']
+    # artist_dict['years'] = []
+    # artist_dict['show_count'] = 0
+    # print artist_dict['addeddate']
     # artist_dict['addeddate'] = meta['addeddate']
     return artist_dict
 
 
 def parseDate(dateobj):
-    # output_format = "%a, %d %b %Y %H:%M:%S GMT"
-    output_format = "ddd, d MMM YYYY HH:mm:ss"
+    output_format = "YYYY-MM-DD HH:mm:ss"
+    # output_format = "ddd, d MMM YYYY HH:mm:ss"
     if isinstance(dateobj, list):
-        print arrow.get(dateobj[-1]).format(output_format)
+        # print arrow.get(dateobj[-1]).format(output_format)
         # result = str(datetime.strptime(dateobj[-1], "%Y-%m-%d %H:%M:%S").strftime(output_format)) # xxxx-xx-xx xx:xx:xx
         result = arrow.get(dateobj[-1]).format(output_format)
     else:
-        print arrow.get(dateobj).format(output_format)        
+        # print arrow.get(dateobj).format(output_format)        
         # result = str(datetime.strptime(dateobj, "%Y-%m-%d %H:%M:%S").strftime(output_format)) # xxxx-xx-xx xx:xx:xx
         result = arrow.get(dateobj).format(output_format)
-    return result + " GMT"
+    return result
 
 
 def processShow(metadata):
@@ -207,14 +212,11 @@ def processShow(metadata):
             tempd['rating'] = review['stars']
             show_dict['comments'].append(tempd)
 
-
     return show_dict
 
 
 def main(archiveid):
     metadata = getMeta(archiveid)
-
-
     if 'is_collection' in metadata:
         # process as artist
         artist = processCollection(metadata)
@@ -222,8 +224,28 @@ def main(archiveid):
         # raise Exception('is a collection')
     else:
         show = processShow(metadata)
-        show['artist'] = getArtistId(show['artist_identifier'])
-        postShow(show)
+
+        artist_id = getArtistId(show['artist_identifier'])
+        if not artist_id:
+            print "ADDING MISSING ARTIST"
+            artist_meta = getMeta(show['artist_identifier'])
+            # print artist_meta
+            artist = processCollection(artist_meta)
+            r = postArtist(artist)
+            # artist_id = getArtistId(show['artist_identifier'])    
+            # print r, r.raw_body
+            # pritn type(r.raw_body)
+            # print json.loads(r.raw_body)
+            artist_id = r.body['_id']
+        
+        print artist_id
+        try:
+            show['artist'] = artist_id
+            # time.sleep(5)
+            postShow(show)
+        except:
+            print "NO ARTIST ID FOUND"
+            raise
         # process as show of artist
 
 if __name__ == '__main__':

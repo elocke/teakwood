@@ -25,6 +25,9 @@ artist_schema = {
         },
         'show_count': {
             'type': 'integer'
+        },
+        'years': {
+            'type': 'list'
         }
 }
 
@@ -69,6 +72,9 @@ show_schema = {
             'type': 'datetime',
             'required': True
             },   
+        'year': {
+            'type': 'integer'
+        },
         'addeddate': {
             'type': 'datetime'
             },   
@@ -188,6 +194,7 @@ artists = {
     # }
 }
 
+
 shows = {
     'url': 'shows',
    'item_title': 'show',
@@ -220,6 +227,18 @@ artists_shows = {
     }
 }
 
+artists_years = {
+    "url": "artists/<regex('[a-f0-9]{24}'):_id>/years",
+    'schema': artist_schema,
+    'datasource': {
+        'source': 'artists',
+        'projection': {
+            'years': 1
+        }
+    }
+}
+
+
 # 'SERVER_NAME': None,
 MONGO_HOST = 'database'
 MONGO_PORT = 27017
@@ -233,12 +252,6 @@ ITEM_METHODS =['GET', 'PATCH', 'PUT', 'DELETE']
 DOMAIN = {
     'artists': artists,
     'shows': shows,
-    'test': artists_shows
+    'artist_shows': artists_shows
 } 
 URL_PREFIX = 'api'
-
-
-def count_shows(response):   
-    pass
-
-    

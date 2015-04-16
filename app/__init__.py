@@ -15,31 +15,53 @@ import json
 app = Eve(__name__,settings='/code/app/settings.py')
 
 def countArtistShowCt(items):
-    print items
+    # print items
     for item in items:
         if item['_status'] == 'OK':
             artists = app.data.driver.db['artists']
             shows = app.data.driver.db['shows']
             artist_id = ObjectId(item['artist'])
             artist = artists.find_one({'_id': artist_id})
+            # print artist
             count = shows.find({'artist': artist_id}).count()
+            art_year = item['date'].year
+            if 'years' in artist:
+                # print artist['years'], art_year
+                art_years = artist['years']
+                # print type(art_years), type(art_year)
+                art_years.append(art_year)
+                # print art_years
+                art_years = list(set(art_years))
+            else:
+                art_years = []
+                art_years.append(art_year)
+            
+            # print art_years
             url = '/api/artists/' + str(artist_id)
             etag = str(artist['_etag'])
-            print artist_id, count, artist, url, etag
+            # print artist_id, count, artist, url, etag
             print {'IF_MATCH': etag}
             r = app.test_client().patch(url, 
-                data=json.dumps({"show_count": count}), 
+                data=json.dumps({
+                    "show_count": count,
+                    "years": art_years}), 
                 content_type='application/json', 
                 headers={
                 'IF_MATCH': etag
                 })
-            print r.status_code, r.headers, r.data
+            # print r.status_code, r.headers, r.data
+
+def addShowYear(items):
+    # print items
+    for item in items:
+        year = item['date'].year
+        item['year'] = year
 
 
 def debugPatch(item, original):
     print item
 
-
+app.on_insert_shows += addShowYear
 app.on_inserted_shows += countArtistShowCt
 app.on_update_artists += debugPatch
 

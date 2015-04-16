@@ -26,10 +26,10 @@ angular.module('teakwoodApp.controllers', []).
   controller('ListCtrl', ['$scope', '$routeParams', 'Restangular', 'testFactory', function ($scope, $routeParams, Restangular, testFactory, items) {
     $scope.items = [];
     $scope.currentPage = 1;
-    getData($routeParams.artist_id, $scope.currentPage);
+    getData($routeParams.artist_id, $routeParams.year, $scope.currentPage);
 
-    function getData(artistid, pagenum) {
-      testFactory.getArtistShows(artistid, pagenum).then(function(items) {
+    function getData(artistid, year, pagenum) {
+      testFactory.getArtistShows(artistid, year, pagenum).then(function(items) {
           // console.log(items);
           $scope.totalItems = items.meta.total;
           angular.copy(items, $scope.items);              
@@ -51,6 +51,19 @@ angular.module('teakwoodApp.controllers', []).
           show.files[key0].id = show.identifier + '-' + file.track;          
           });
         $scope.show = show        
+      });                
+      console.log($scope);
+    }
+  }]).
+
+  controller('YearCtrl', ['$scope', '$routeParams', 'Restangular', 'testFactory', function ($scope, $routeParams, Restangular, testFactory, items) {
+    $scope.artist_id = $routeParams.artist_id
+    getData($routeParams.artist_id);
+    function getData(artistid) {
+      testFactory.getArtistYears(artistid).then(function(artist) {
+        $scope.years = artist.years
+        $scope.rights = artist.rights
+        // angular.copy()
       });                
       console.log($scope);
     }

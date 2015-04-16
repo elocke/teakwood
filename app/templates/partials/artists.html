@@ -6,7 +6,7 @@
       <ul class="list-unstyled">
         <li ng-repeat="item in items">
 
-          <a href='#/artist/{{item._id|angular}}'>{{item.name|angular}} - ({{item.show_count|angular}})</a>
+          <a href='#/artist/{{item._id|angular}}/years'>{{item.name|angular}} - ({{item.show_count|angular}})</a>
         </li>
       </ul>
 	<pagination total-items="totalItems" items-per-page="25" ng-change="pageChanged()" ng-model="currentPage"></pagination>

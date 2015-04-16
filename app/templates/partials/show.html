@@ -10,9 +10,10 @@
     <pre>{{show.description|angular}}</pre>
   </div>
   <div class="col-md-6">
-    <ul ng-repeat="(key, value) in show.files">
+    <button class="btn btn-default" play-all="show.files">Play all</button>
+    <ul ng-repeat="value in show.files">
       <li>
-        <button class="btn btn-default btn-sm" music-player="play" add-song="file" all-songs="show.files" data-type="addToPlaylist" >{{value.title|angular}}</button>
+        <button class="btn btn-default btn-sm" music-player="play" add-song="value">{{value.title|angular}}</button>
       </li>
     </ul>
   </div>

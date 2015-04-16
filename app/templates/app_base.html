@@ -42,7 +42,7 @@
 
     footer {
         width: 100%;
-        height: 120px;
+        height: 150px;
         background: red;
         position: fixed;
         bottom: 0;
@@ -56,7 +56,18 @@
       height: auto;
       background:rgba(112,141,145,0.5);
     }
-    .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+    .seekBase {
+      height: 30px;
+      width: 90%;
+      border: 1px solid #cccccc;
+    }
+    .seekLoad {
+      height: 30px;
+      width: 0;
+      background-color: #E0EAF1;
+    }    
+    .nav, .pagination, .carousel, li, .panel-title a { cursor: pointer; }
     </style>
 
     {%- endblock styles %}
@@ -114,7 +125,7 @@
         <!-- init soundManager2 player -->
         <sound-manager></sound-manager>
         <p>
-            Currently Playing: {{ currentPlaying.title|angular }} by {{ currentPlaying.artist |angular}} ({{ currentPostion|angular }} / {{ currentDuration|angular }})
+            Currently Playing: <b>{{ currentPlaying.title|angular }}</b> by <i>{{ currentPlaying.artist |angular}}</i> ({{ currentPostion|angular }} / {{ currentDuration|angular }})
         </p>
 
         <div class="seekBase" seek-track>
@@ -124,16 +135,15 @@
         <!-- <button class="btn btn-primary"  pause-music>Pause</button> -->
         <!-- <button class="btn btn-primary"  stop-music>Stop</button> -->
         <!-- <button class="btn btn-primary"  repeat-music>Repeat ({{ repeat|angular }})</button> -->
-
-        Is Playing: {{ isPlaying|angular }}
-        <br/>Volume: {{ volume|angular }} -
+        <br/>Volume: {{ volume|angular }}
         <div class="center-block">
-          <button class="btn btn-primary btn-sm"  music-volume data-type="increase">+</button>
-          <button class="btn btn-primary btn-sm"  music-volume data-type="decrease">-</button>
-          <button class="btn btn-primary btn-sm"  mute-music>Mute ({{ mute |angular}})</button>
-          <button class="btn btn-primary btn-sm"  prev-track>Prev Track</button>
-          <button class="btn btn-primary btn-sm"  play-pause-toggle data-play="Play!" data-pause="Pause!">Play Toggle</button>
-          <button class="btn btn-primary btn-sm"  next-track>Next Track</button>
+
+          <button class="btn btn-primary"  music-volume data-type="increase"><span class="glyphicon glyphicon-volume-up" aria-hidden="true"></span></button>
+          <button class="btn btn-primary"  music-volume data-type="decrease"><span class="glyphicon glyphicon-volume-down" aria-hidden="true"></span></button>
+          <button class="btn btn-primary"  mute-music><span class="glyphicon glyphicon-volume-off" aria-hidden="true">({{ mute |angular}})</span></button>
+          <button class="btn btn-primary"  prev-track><span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span></button>
+          <button class="btn btn-primary"  play-pause-toggle data-play="Play!" data-pause="Pause!"><span class="glyphicon glyphicon-pause" aria-hidden="true">Play!</span></button>
+          <button class="btn btn-primary"  next-track><span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span></button>
         </div>
       </div>
     </footer>   

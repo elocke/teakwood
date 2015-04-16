@@ -19,10 +19,14 @@ angular.module('teakwoodApp', [
         controller: 'RootCtrl', 
         templateUrl: 'partials/artists.html'
       });
-      $routeProvider.when('/artist/:artist_id', {
+      $routeProvider.when('/artist/:artist_id/years/:year', {
         controller: 'ListCtrl', 
         templateUrl: 'partials/artist-view.html'
       });
+      $routeProvider.when('/artist/:artist_id/years', {
+        controller: 'YearCtrl', 
+        templateUrl: 'partials/artist-years.html'
+      });      
       $routeProvider.when('/show/:show_id', {
         controller: 'ShowCtrl', 
         templateUrl: 'partials/show.html'
