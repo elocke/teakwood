@@ -12,3 +12,6 @@ _mailinglist
 .tox
 *.json
 *.log
+*.sublime-project
+*.sublime-workspace
+*.log

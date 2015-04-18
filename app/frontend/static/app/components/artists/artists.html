@@ -1,0 +1,17 @@
+<p>list artist view</p>
+<div class="row">
+  <div class="col-md-12">
+      <ul class="list-unstyled">
+        <li ng-repeat="item in items">
+
+          <a href='#/artist/{{item._id}}/years'>{{item.name}} - ({{item.show_count}})</a>
+        </li>
+      </ul>
+	<pagination total-items="totalItems" items-per-page="25" ng-change="pageChanged()" ng-model="currentPage"></pagination>
+		<p>
+		 Total items: {{totalItems}}<br />
+		 Items per page: {{meta.max_results}}<br />
+		 Current Page: {{currentPage}}
+		</p>          
+  </div>
+</div>

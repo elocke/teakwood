@@ -12,7 +12,7 @@ import os
 import json 
 
 
-app = Eve(__name__,settings='/code/app/settings.py')
+app = Eve(__name__, settings='settings.py')
 
 def countArtistShowCt(items):
     # print items
@@ -89,8 +89,8 @@ app.jinja_env.exception_formatter = format_exception
 app.config["MONGODB_SETTINGS"] = {
     "host": "database",
     "port": 27017,
-	"db": "teakwood"
-	}
+    "db": "teakwood"
+    }
 
 app.config["SECRET_KEY"] = "r@g3f@c3"
 
@@ -109,26 +109,69 @@ app.config['DEBUG_TB_TEMPLATE_EDITOR_ENABLED'] = True
 app.debug = True
 app.url_map.strict_slashes = False
 
-# Setup Bootstrap
-# Bootstrap(app)
-# app.extensions['bootstrap']['cdns']['jquery'] = WebCDN(
-#     '//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/'
-# )
-Bower(app)
+from frontend import frontend
+app.register_blueprint(frontend.bp, url_prefix='/frontend')
 
-# from flask.ext.assets import Environment, Bundle
-# assets = Environment(app)
-# assets.init_app(app)
-# css_all = Bundle(
-    # 'less/style.less',
-    # filters='less, cssmin',
-    # output='gen/min.css',
-# )
 
-# These assets get passed templates to be rendered
-# assets.register('css_all', css_all)
-# assets.debug = True
-# app.config['ASSETS_DEBUG'] = True
+# Bower(app)
+
+
+from flask.ext.assets import Environment, Bundle
+assets = Environment(app)
+assets.init_app(app)
+
+assets.load_path = [
+    # os.path.join(os.path.dirname(os.path.abspath(__file__)), 'frontend','static')
+    os.path.join(os.path.dirname(__file__), 'frontend','static')
+    ]
+
+bower_assets = Bundle(
+    'bower_components/angular/angular.js',
+    'bower_components/angular-animate/angular-animate.js',
+    'bower_components/angular-filter/dist/angular-filter.js',
+    'bower_components/angular-route/angular-route.js',
+    'bower_components/angular-soundmanager2/dist/angular-soundmanager2.js',
+    'bower_components/angular-ui-router/release/angular-ui-router.js',
+    'bower_components/fastclick/lib/fastclick.js',
+    'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',    
+    # 'bower_components/foundation-apps/dist/js/foundation-apps.js',
+    # 'bower_components/foundation-apps/dist/js/foundation-apps-templates.js',
+    'bower_components/hammerjs/hammer.js',
+    'bower_components/lodash/dist/lodash.js',
+    'bower_components/restangular/dist/restangular.js',
+    'bower_components/tether/tether.js',
+    'bower_components/viewport-units-buggyfill/viewport-units-buggyfill.js'
+    )
+
+app_assets = Bundle(
+    'app/app.js',
+    'app/app.module.js',
+    'app/app.routes.js',
+    'app/components/artists/artists.controller.js',
+    'app/components/show/show.controller.js',
+    'app/components/shows/shows.controller.js',
+    'app/components/years/years.controller.js',
+    'app/common/services/api.factory.js'
+    )
+
+assets.register(
+    'js_all',
+    Bundle(
+        bower_assets,
+        app_assets,
+        output='js_all.js'
+        )
+    )
+
+css_all = Bundle(
+    'bower_components/foundation-apps/dist/css/foundation-apps.css',
+    'css/all.css',
+    filters='less, cssmin',
+    output='gen/min.css',    
+    )
+
+assets.register('css_all', css_all)
+app.config['ASSETS_DEBUG'] = True
 
 
 from rq_dashboard import RQDashboard
@@ -138,15 +181,9 @@ RQDashboard(app)
 
 toolbar = DebugToolbarExtension(app)
 
-from flask.ext.triangle import Triangle
-Triangle(app)
+# from flask.ext.triangle import Triangle
+# Triangle(app)
 
-
-from views.main import main
-from views.partials import partials
-# # Blueprints
-app.register_blueprint(main, url_prefix='/', template_folder='templates')
-app.register_blueprint(partials, url_prefix='/partials', template_folder='templates')
 
 
 if __name__ == '__main__':

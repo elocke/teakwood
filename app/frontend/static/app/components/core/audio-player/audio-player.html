@@ -1,0 +1,43 @@
+    {%- block footer %}
+
+    <footer class="navbar navbar-default navbar-fixed-bottom">
+      <div class="container">
+        <!-- init soundManager2 player -->
+        <sound-manager></sound-manager>
+        <p>
+            Currently Playing: <b>{{ currentPlaying.title }}</b> by <i>{{ currentPlaying.artist }}</i> ({{ currentPostion }} / {{ currentDuration }})
+        </p>
+
+        <div class="seekBase" seek-track>
+            <div class="seekLoad" ng-style="{width : ( progress + '%' ) }"></div>
+        </div>
+        <!-- <button class="btn btn-primary"  play-music>Play</button> -->
+        <!-- <button class="btn btn-primary"  pause-music>Pause</button> -->
+        <!-- <button class="btn btn-primary"  stop-music>Stop</button> -->
+        <!-- <button class="btn btn-primary"  repeat-music>Repeat ({{ repeat }})</button> -->
+        <br/>Volume: {{ volume }}
+        <div class="center-block">
+
+          <button class="btn btn-primary"  music-volume data-type="increase"><span class="glyphicon glyphicon-volume-up" aria-hidden="true"></span></button>
+          <button class="btn btn-primary"  music-volume data-type="decrease"><span class="glyphicon glyphicon-volume-down" aria-hidden="true"></span></button>
+          <button class="btn btn-primary"  mute-music><span class="glyphicon glyphicon-volume-off" aria-hidden="true">({{ mute }})</span></button>
+          <button class="btn btn-primary"  prev-track><span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span></button>
+          <button class="btn btn-primary"  play-pause-toggle data-play="Play!" data-pause="Pause!"><span class="glyphicon glyphicon-pause" aria-hidden="true">Play!</span></button>
+          <button class="btn btn-primary"  next-track><span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span></button>
+        </div>
+      </div>
+    </footer>   
+    {% endblock footer -%}
+    <div class="container" id="playlist">
+      <h5>Playlist  <span clear-playlist>[Clear Playlist]</span></h5>        
+      <ul>
+          <li ng-repeat="song in playlist">
+            <a play-from-playlist="song">{{ song.title }}</a>
+            -
+            <a remove-from-playlist="song" data-index="{{index}}">
+                <small>(remove)</small>
+            </a>
+            <span ng-if="currentPlaying.id == song.id"> - (current)</span>
+          </li>
+      </ul>
+    </div>        
