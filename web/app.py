@@ -12,7 +12,7 @@ import os
 import json 
 
 
-app = Eve(__name__, settings='settings.py')
+app = Eve(__name__, settings='/usr/src/app/settings.py')
 
 def countArtistShowCt(items):
     # print items
@@ -67,16 +67,16 @@ app.on_update_artists += debugPatch
 
 
 
-import logging
-from logging import FileHandler
-from logging import Formatter
-file_handler = FileHandler('/code/logs/flask.log')
-file_handler.setLevel(logging.ERROR)
-file_handler.setFormatter(Formatter(
-    '%(asctime)s %(levelname)s: %(message)s '
-    '[in %(pathname)s:%(lineno)d]'
-))
-app.logger.addHandler(file_handler)
+# import logging
+# from logging import FileHandler
+# from logging import Formatter
+# file_handler = FileHandler('flask.log')
+# file_handler.setLevel(logging.ERROR)
+# file_handler.setFormatter(Formatter(
+#     '%(asctime)s %(levelname)s: %(message)s '
+#     '[in %(pathname)s:%(lineno)d]'
+# ))
+# app.logger.addHandler(file_handler)
 
 
 
@@ -87,7 +87,7 @@ def format_exception(tb):
 app.jinja_env.exception_formatter = format_exception
 
 app.config["MONGODB_SETTINGS"] = {
-    "host": "database",
+    "host": "db",
     "port": 27017,
     "db": "teakwood"
     }
@@ -187,4 +187,4 @@ toolbar = DebugToolbarExtension(app)
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port=8000)

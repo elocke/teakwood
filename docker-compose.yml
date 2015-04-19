@@ -1,59 +1,50 @@
 db:
-  image: dockerfile/mongodb
+  image: mongo:latest
   command: mongod --rest --httpinterface
   expose:
     - "27017"
   ports:
     - "28017:28017"
     - "27017:27017"
+
 redis:
   image: redis:latest
   ports:
     - "15672:15672"
-# api:
-#   build: .
-#   command: python flask/api/api.py
-#   volumes:
-#     - .:/code
-#     - logs/:/var/log
-#   ports:
-#     - "8081:8081"
-#   links:
-#     - db
-#     - db:database
-#     - redis
-#   environment:
-#     - VIRTUAL_HOST=api.localhost
-# flask:
-#   build: .
-#   command: python flask/manage.py runserver
-#   volumes:
-#     - .:/code
-#     - logs/:/var/log
-#   ports:
-#     - "5000:5000"
-#   links:
-#     - db
-#     - db:database
-#     - redis
-#   environment:
-#     - VIRTUAL_HOST=flask.localhost
-# nginx:
-#   image: jwilder/nginx-proxy
-#   volumes:
-#     - /var/run/docker.sock:/tmp/docker.sock
-#   ports:
-#     - "80:80"
-workers:
-  build: .
-  # image: dockerfile/supervisor
-  volumes:
-    - conf/supervisor:/etc/supervisor/conf.d
-    - .:/code
+
+web:
+  restart: always
+  build: ./web
+  expose:
+    - "8000"
   ports:
-    - "8080:8080"
-    - "8081:8081"
+    - "8000:8000"
   links:
-    - db
     - db:database
     - redis
+  volumes:
+    - ./web:/usr/src/app
+  env_file: .env
+  # command: /usr/local/bin/gunicorn -w 2 -b :8000 app:app
+  command: python /usr/src/app/app.py
+
+workers:
+  restart: always
+  build: ./workers
+  links:
+    - db
+    - redis
+  volumes:
+    - ./workers:/usr/src/app
+  env_file: .env
+  command: python /usr/src/app/worker.py
+
+nginx:
+  restart: always
+  build: ./nginx/
+  ports:
+    - "80:80"
+  volumes:
+    - /www/static
+  links:
+    - web:web    

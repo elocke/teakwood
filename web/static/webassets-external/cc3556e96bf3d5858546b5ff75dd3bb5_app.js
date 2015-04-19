@@ -9,12 +9,12 @@ angular.module('teakwoodApp', [
     'ui.bootstrap',
     'angular.filter',
 
-    'teakwoodApp.services.api' ,            
     // Loading App js 
     'teakwoodApp.components.artists', 
     'teakwoodApp.components.years', 
     'teakwoodApp.components.shows', 
-    'teakwoodApp.components.show'
+    'teakwoodApp.components.show',
+    'teakwoodApp.services.api'             
     // 'teakwoodApp.services',
     // 'teakwoodApp.controllers',
     // 'teakwoodApp.directives',
