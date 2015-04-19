@@ -3,11 +3,6 @@ arrow==0.5.4
 backports.ssl-match-hostname==3.4.0.2
 click==4.0
 clint==0.3.3
-docker-compose==1.1.0
-docker-py==0.7.2
-dockerpty==0.3.2
-docopt==0.6.2
-fig==1.0.1
 Flask==0.10.1
 internetarchive==0.8.1
 itsdangerous==0.24

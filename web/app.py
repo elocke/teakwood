@@ -12,7 +12,7 @@ import os
 import json 
 
 
-app = Eve(__name__, settings='/usr/src/app/settings.py')
+app = Eve(__name__, settings='settings.py')
 
 def countArtistShowCt(items):
     # print items
