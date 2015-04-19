@@ -23,7 +23,7 @@ web:
     - db:database
     - redis
   volumes:
-    - ./web:/usr/src/app
+    - ./web:/usr/src/app/web
   env_file: .env
   # command: /usr/local/bin/gunicorn -w 2 -b :8000 app:app
   command: python /usr/src/app/app.py
@@ -35,7 +35,7 @@ workers:
     - db
     - redis
   volumes:
-    - ./workers:/usr/src/app
+    - ./workers:/usr/src/app/workers
   env_file: .env
   command: python /usr/src/app/worker.py
 
