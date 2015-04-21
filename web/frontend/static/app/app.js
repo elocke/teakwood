@@ -41,7 +41,7 @@ angular.module('teakwoodApp', [
       $routeProvider.otherwise({redirectTo:'/'});
   }]).
   config(['RestangularProvider', function(RestangularProvider) {
-    RestangularProvider.setBaseUrl('http://192.168.1.4:8080/api');
+    RestangularProvider.setBaseUrl('http://104.236.158.138/api');
     RestangularProvider.setRestangularFields({
       id: "_id"
     });

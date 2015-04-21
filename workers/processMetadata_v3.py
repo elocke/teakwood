@@ -14,7 +14,7 @@ import sys
 import arrow
 import time 
 # connect('teakwood', host='db', port=27017)
-ENTRY_POINT = 'http://web:8080/api'
+ENTRY_POINT = 'http://web:8000/api'
 
 
 

@@ -255,3 +255,4 @@ DOMAIN = {
     'artist_shows': artists_shows
 } 
 URL_PREFIX = 'api'
+X_ALLOW_CREDENTIALS = True
