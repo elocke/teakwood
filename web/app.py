@@ -151,7 +151,10 @@ app_assets = Bundle(
     'app/components/show/show.controller.js',
     'app/components/shows/shows.controller.js',
     'app/components/years/years.controller.js',
-    'app/common/services/api.factory.js'
+    'app/common/services/api.factory.js',
+    'app/components/core/audio-player/audio-player.js',    
+    'app/components/core/audio-player/audio-player.controller.js',
+    'app/components/core/audio-player/audio-player.directive.js'
     )
 
 assets.register(

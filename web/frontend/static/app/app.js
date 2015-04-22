@@ -14,7 +14,8 @@ angular.module('teakwoodApp', [
     'teakwoodApp.components.years', 
     'teakwoodApp.components.shows', 
     'teakwoodApp.components.show',
-    'teakwoodApp.services.api'             
+    'teakwoodApp.services.api',
+    'teakwoodApp.core.audio-player'             
     // 'teakwoodApp.services',
     // 'teakwoodApp.controllers',
     // 'teakwoodApp.directives',

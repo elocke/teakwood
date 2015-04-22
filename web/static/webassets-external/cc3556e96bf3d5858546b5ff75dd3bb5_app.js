@@ -14,7 +14,8 @@ angular.module('teakwoodApp', [
     'teakwoodApp.components.years', 
     'teakwoodApp.components.shows', 
     'teakwoodApp.components.show',
-    'teakwoodApp.services.api'             
+    'teakwoodApp.services.api',
+    'teakwoodApp.core.audio-player'             
     // 'teakwoodApp.services',
     // 'teakwoodApp.controllers',
     // 'teakwoodApp.directives',
@@ -41,7 +42,7 @@ angular.module('teakwoodApp', [
       $routeProvider.otherwise({redirectTo:'/'});
   }]).
   config(['RestangularProvider', function(RestangularProvider) {
-    RestangularProvider.setBaseUrl('http://192.168.1.4:8080/api');
+    RestangularProvider.setBaseUrl('http://104.236.158.138/api');
     RestangularProvider.setRestangularFields({
       id: "_id"
     });
