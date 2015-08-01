@@ -1,0 +1,15 @@
+---
+name: years
+url: artist/:artist_id/years
+parent: home
+controller: YearsController
+---
+
+<section class="block-list">
+	<header>Years</header>
+		<ul>
+		<li class="with-chevron" ng-repeat="year in years">
+		    <a ui-sref='shows({ artist_id: params.artist_id, year: year })'>{{year}}</a>
+		</li>
+	</ul>   
+</section>

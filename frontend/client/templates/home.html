@@ -1,0 +1,59 @@
+---
+name: home
+url: /
+---
+
+<div zf-panel position="left" id="sub-nav" class="fast bounceInOut medium-2 medium-grid-block vertical">
+	<div class="grid-content">
+		<ul class="icon-left vertical menu-bar">
+		  <li><a href="#" ui-sref="artists"><img zf-iconic="" data-src="http://placehold.it/128x128">Browse</a></li>
+		</ul>
+	</div>
+	<div class="grid-content shrink now-playing" ng-show="isPlaying">
+		<h5>Now Playing</h5>
+		<p><b>{{ currentPlaying.title }}</b><br>
+		<i>{{ currentPlaying.artist }}</i></p> 
+	</div>
+</div>
+
+<div class="grid-block">
+	<div class="grid-content" ui-view></div>
+</div>
+
+<div zf-panel="" id="years-panel" position="right" class="fast slideInLeft medium-1">
+	<div class="grid-block grid-content">  
+		<a zf-close="" class="close-button">×</a>
+		<section class="block-list">
+			<header>Years</header>
+			<ul>
+				<li ng-repeat="year in years" ui-sref-active="is-active">
+				    <a ui-sref='shows({ artist_id: artist_id, year: year })'>{{year}}</a>
+				</li>
+			</ul>   
+		</section>
+	</div>
+
+
+
+
+
+<!-- <div zf-panel id="feed" position="right" class="fast bounceInOut medium-2 medium-grid-content">
+  <section class="block-list">
+	  <header>Activity Feed</header>
+	  <ul>
+	    <li><a href="#"><h6>Jon Snow</h6>Just Listened to Death Metal</a></li>
+	    <li><a href="#"><h6>Hodor</h6>Just Listened to Hit Me Baby One More Time</a></li>
+	    <li><a href="#"><h6>Arya Stark</h6>Just Liked Taylor Swift</a></li>
+	    <li><a href="#"><h6>Jon Snow</h6>Just Listened to Death Metal</a></li>
+	    <li><a href="#"><h6>Hodor</h6>Just Listened to Hit Me Baby One More Time</a></li>
+	    <li><a href="#"><h6>Arya Stark</h6>Just Liked Taylor Swift</a></li>
+	    <li><a href="#"><h6>Jon Snow</h6>Just Listened to Death Metal</a></li>
+	    <li><a href="#"><h6>Hodor</h6>Just Listened to Hit Me Baby One More Time</a></li>
+	    <li><a href="#"><h6>Arya Stark</h6>Just Liked Taylor Swift</a></li>
+	    <li><a href="#"><h6>Jon Snow</h6>Just Listened to Death Metal</a></li>
+	    <li><a href="#"><h6>Hodor</h6>Just Listened to Hit Me Baby One More Time</a></li>
+	    <li><a href="#"><h6>Arya Stark</h6>Just Liked Taylor Swift</a></li>
+	  </ul>
+	</section>
+</div> -->
+<!-- End Compose Message -->

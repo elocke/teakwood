@@ -1,0 +1,51 @@
+---
+name: show
+url: show/:show_id
+parent: home
+controller: ShowController
+---
+
+<div class="primary title-bar">
+  <div class="center title">{{show.date}}</div>
+  <span class="left"><a href="#">Left</a></span>
+  <span class="right"><a href="#">Right</a></span>
+</div>
+
+<div class="grid-block">
+  <div class="grid-content">
+    <!-- Metadata info -->
+    <h5>Artist: <small>{{show.artist_identifier}}</small></h5>
+    <h5>Location: <small>{{show.location}}</small></h5>
+    <h5>Venue: <small>{{show.venue}}</small></h5>
+    <h5>Date: <small>{{show.date}}</small></h5>
+    <h5>Lineage: <small>{{show.source}}</small></h5>
+    <h5>Taper: <small>{{show.taper}}</small></h5>
+
+
+  </div>
+</div>
+
+
+<div class="grid-block">
+  <div class="grid-content">
+    <!-- description info -->
+    <zf-accordion auto-open="false">
+      <zf-accordion-item title="Raw Description">
+        <pre>{{show.description}}</pre>
+      </zf-accordion-item>
+  </div>
+</div>
+
+<div class="grid-block">
+  <div class="grid-content">
+    <!-- description info -->
+    <section class="block-list">
+      <header play-all="show.files">Play All Songs</header>
+        <ul>
+          <li ng-repeat="value in show.files" music-player="play" add-song="value">
+            <pre>{{value.track}} - {{value.title}}</pre>
+          </li>
+        </ul>
+    </section>
+  </div>
+</div>

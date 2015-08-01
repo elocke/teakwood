@@ -1,0 +1,15 @@
+---
+name: shows
+url: artist/:artist_id/years/:year
+parent: home
+controller: ShowsController
+---
+
+<section class="block-list">
+  <header>Shows</header>
+  <ul>
+    <li class="with-chevron" ng-repeat="item in items">
+	    <a ui-sref='show({show_id : item._id})'>{{item.date}} - {{item.location}}</a>
+    </li>
+  </ul>   
+</section>

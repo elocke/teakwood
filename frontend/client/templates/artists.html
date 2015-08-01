@@ -1,0 +1,17 @@
+---
+name: artists
+url: artists/
+parent: home
+controller: ArtistsController
+---
+
+<section class="block-list">
+  <header>Artists</header>
+  <ul>
+    <li class="with-chevron" ui-sref-active="is-active" ng-repeat="item in items">
+      <!-- <a ui-sref='years({ artist_id: item._id})' ng-click="$rootScope.artist_name = item.name">{{item.name}} - ({{item.show_count}})</a> -->
+      <a  zf-open="years-panel" ng-click="setYears(item)">{{item.name}} - ({{item.show_count}})</a>
+    </li>
+  </ul>   
+</section>
+

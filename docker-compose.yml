@@ -34,10 +34,11 @@ workers:
   links:
     - db
     - redis
+    - nginx
   volumes:
     - ./workers:/usr/src/app/workers
   env_file: .env
-  command: python /usr/src/app/worker.py
+  command: python /usr/src/app/workers/worker.py normal
 
 nginx:
   restart: always
@@ -45,6 +46,8 @@ nginx:
   ports:
     - "80:80"
   volumes:
-    - /www/static
+    - ./frontend/build:/www
+  # volumes_from:
+  #   - web    
   links:
-    - web:web    
+    - web    

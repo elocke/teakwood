@@ -14,7 +14,7 @@ import sys
 import arrow
 import time 
 # connect('teakwood', host='db', port=27017)
-ENTRY_POINT = 'http://web:8000/api'
+ENTRY_POINT = 'http://nginx/api'
 
 
 
@@ -31,6 +31,7 @@ ENTRY_POINT = 'http://web:8000/api'
 #     return metadata
 
 def getMeta(identifier):
+    print 'grabbing metadata'
     url = 'http://archive.org/metadata/{identifier}'.format(identifier=identifier) 
     thread = unirest.get(url)
     return thread.body

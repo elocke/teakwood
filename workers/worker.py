@@ -11,7 +11,7 @@ MAX_FAILURES = 3
  
 logger = logging.getLogger(__name__)
  
-queues = None
+queues = ('high','normal','low')
  
 def retry_handler(job, exc_type, exc_value, traceback):
     job.meta.setdefault('failures', 0)
